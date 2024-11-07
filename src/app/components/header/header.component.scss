@@ -1,0 +1,22 @@
+.titulo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo{
+    margin-left: 10px;
+    margin-right: -8px;
+}
+
+.menu-lista{
+    background-color: rgba(138, 235, 218, 0.4);
+    border-radius: 15px;
+    border: 1px groove  #000000; 
+}
+
+ion-item::part(native) {
+    background-color: rgba(138, 235, 218, 0.4);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    border: 1px groove  #000000; 
+ }

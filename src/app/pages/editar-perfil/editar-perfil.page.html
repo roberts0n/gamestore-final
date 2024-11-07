@@ -1,0 +1,118 @@
+<ion-header>
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>Perfil</ion-title>
+    </div>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-card class="registro">
+    <ion-card-header>
+      <ion-card-title>Editar usuario</ion-card-title>
+      <h5 class="subtitulos">Modifique los datos de su perfil según necesite.</h5>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="formulario" (ngSubmit)="editarUser()">
+        <h2 class="subtitulos">Modifique su usuario</h2>
+        <ion-item>
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+          <ion-input placeholder="Usuario:" formControlName="usuario" type="text"></ion-input>
+        </ion-item>
+        <div *ngIf="formulario.get('usuario')?.invalid && formulario.get('usuario')?.touched">
+          <ion-text color="danger" *ngIf="formulario.get('usuario')?.errors?.['minlength']">
+            El nombre de usuario debe tener al menos 3 letras
+          </ion-text>
+        </div>
+        <h2 class="subtitulos">Modifique su edad</h2>
+        <ion-item>
+          <ion-icon name="calendar-number-outline" slot="start"></ion-icon>
+          <ion-input placeholder="Edad:" formControlName="edad" type="number"></ion-input>
+        </ion-item>
+        <div *ngIf="formulario.get('edad')?.invalid && formulario.get('edad')?.touched">
+          <ion-text color="danger" *ngIf="formulario.get('edad')?.errors?.['min']">
+            La edad mínima es 13 años
+          </ion-text>
+          <ion-text color="danger" *ngIf="formulario.get('edad')?.errors?.['max']">
+            La edad máxima es 120 años
+          </ion-text>
+        </div>
+  
+        <h2 class="subtitulos">Modifique su imagen de perfil</h2>
+        <ion-item>
+          <ion-icon name="image-outline"  slot="start"></ion-icon>
+          <ion-button class="subir2" color="barras" (click)="takePicture()">Seleccionar imagen</ion-button>
+        </ion-item>
+        <ion-item *ngIf="imagen">
+          <img [src]="imagen" alt="Imagen seleccionada" class="foto-perfil" />
+        </ion-item>
+  
+        <div *ngIf="formulario.errors?.['camposVacios']">
+          <ion-text color="danger">Debes modificar al menos un campo.</ion-text>
+        </div>
+        <div *ngIf="formulario.errors?.['camposSinCambios']">
+          <ion-text color="danger">Debes modificar al menos un campo.</ion-text>
+        </div>
+  
+        <button mat-fab extended class="boton-registro" color="primary" type="submit" [disabled]="!formulario.dirty ||formulario.invalid">
+          <mat-icon>upload</mat-icon>
+          Actualizar datos
+        </button>
+      </form>
+  
+      <button mat-fab extended class="boton-registro" color="primary" [routerLink]="['/perfil-contrasena']" routerLinkActive="router-link-active">
+        <mat-icon>password</mat-icon>
+        Editar contraseña
+      </button>
+    </ion-card-content>
+  </ion-card>
+
+ <!--  <ion-card class="registro">
+    <ion-card-header>
+      <ion-card-title>Editar usuario</ion-card-title>
+      <h5 class="subtitulos">Modifique los datos de su perfil segun necesite.</h5>
+    </ion-card-header>
+    <ion-card-content>
+      <form>
+        <h2  class="subtitulos">Modifique su usuario</h2>
+        <ion-item>
+          <ion-label position="floating">Usuario: </ion-label>
+          <ion-input  [(ngModel)]="usuario" name="usuario" type="text" required></ion-input>
+        </ion-item>
+        <h2  class="subtitulos">Modifique su edad</h2>
+        <ion-item>
+          <ion-label  position="floating">Edad:</ion-label>
+          <ion-input [(ngModel)]="edad" name="edad" type="number" required ></ion-input>
+        </ion-item>
+        <h2  class="subtitulos">Modifique su imagen de perfil</h2>
+        <ion-item>
+          <ion-label position="floating">Imagen de perfil</ion-label>
+          <ion-button class="subir2" color="barras" (click)="takePicture()">Seleccionar imagen</ion-button>
+        </ion-item>
+      </form>
+      
+      <button mat-fab extended class="boton-registro" color="primary" (click)="editarUsuario()">
+        <mat-icon>upload</mat-icon>
+        Actualizar datos
+      </button>
+      <button mat-fab extended class="boton-registro" color="primary" [routerLink]="['/perfil-contrasena']" routerLinkActive="router-link-active" >
+        <mat-icon>password</mat-icon>
+        Editar contraseña
+      </button>
+    </ion-card-content>
+  </ion-card> -->
+  
+<!--   <ion-item>
+    <ion-label  position="floating">Contraseña:  </ion-label>
+    <ion-input  [(ngModel)]="password" name="password" type="password" required value="hola12345"></ion-input>
+  </ion-item>
+ -->
+</ion-content>

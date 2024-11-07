@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>Lista de deseos</ion-title>
+    </div>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true">
+     <mat-list class="lista-deseos"  *ngIf="juegosDeseados.length > 0; else deseosVacio">
+      <h1 class="titulo">Lista de deseos</h1>
+    <mat-list-item class="distancia" *ngFor="let juego of juegosDeseados">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" >
+            <span matListItemTitle class="negro sombra">{{juego.nombre_juego}}</span>
+            <span matListItemLine class="negro">Plataforma: {{juego.nombre_plataforma}}</span>
+            <span matListItemLine class="negro">Precio: ${{juego.precio}}</span>
+            <!-- <img matListItemAvatar src="../../../assets/img/ffxvi.jpeg" alt="" class="avatar"> -->
+          </ion-col>
+          <ion-col size="12" class="orden">
+            <button mat-fab extended class="boton-compra" color="primary"  (click)="botonCompra(juego.id_juego)">
+              <mat-icon svgIcon="buy"></mat-icon>
+              Comprar
+            </button>
+            <button mat-fab extended class="boton-eliminar" (click)="botonEliminar(juego.id_juego)">
+              <mat-icon svgIcon="trash"></mat-icon>
+              Eliminar
+            </button>     
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </mat-list-item>
+  </mat-list>
+
+
+  <ng-template #deseosVacio>
+    <ion-card text-center class="lista-deseos">
+      <ion-card-header>
+        <h1 class="ion-text-center sombra subtitulos">Lista de deseos vacia</h1>
+      </ion-card-header>
+    
+      <ion-card-content>
+       <p>Tu lista de deseos esta vacia! Añade algunos juegos!</p>
+      </ion-card-content>
+    </ion-card>
+    
+  </ng-template>
+ 
+  
+
+</ion-content>
+
+
+<app-tabs></app-tabs>

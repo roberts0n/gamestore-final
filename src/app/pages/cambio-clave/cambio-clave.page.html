@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>Inicio de sesion</ion-title>
+    </div>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header> 
+
+<ion-content [fullscreen]="true">
+
+  <ion-card class="login">
+    <ion-card-header>
+      <ion-card-title>Comprobar codigo</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+    <h2>Introduce tu codigo que hemos enviado a tu correo</h2>
+    <br>
+        <ion-item>
+          <ion-label position="floating">codigo:</ion-label>
+          <ion-input  [(ngModel)]="codigo" name="codigo" type="text" required></ion-input>
+        </ion-item>
+        <br>
+        <br>
+      <button mat-fab extended class="boton-login ion-padding" color="primary" (click)="comprobarCodigo()">
+        <mat-icon >login</mat-icon>
+        Obtener codigo
+      </button>
+      <a [routerLink]="['/registro']" routerLinkActive="router-link-active" class="registrar">No tienes una cuenta? Registrate aca</a>
+
+    </ion-card-content>
+  </ion-card>
+
+  
+  
+</ion-content>

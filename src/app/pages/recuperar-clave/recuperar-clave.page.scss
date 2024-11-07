@@ -1,0 +1,57 @@
+.logo{
+    margin-left: 10px;
+    margin-right: -8px;
+}
+
+.titulo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login{
+    background-color: rgba(138, 235, 218, 0.6);
+    border: 1px solid #000000; 
+
+}
+
+.subtitulos{
+    color: #000000;
+}
+
+.login-inputs{
+    background-color: rgba(138, 235, 218, 0.6);
+    
+}
+
+.div{
+    border: 1px solid black;
+    background: rgba(138, 235, 218, 0.6);
+}
+
+ion-item::part(native) {
+    background-color: rgba(138, 235, 218, 0.4);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    border: 1px groove  #000000; 
+ }
+
+ .olvidar{
+    display: flex;
+    justify-content: baseline;
+ }
+
+ .boton-login{
+    color: white;
+ }
+
+ .registrar{
+    margin-top: 15px;
+    display: flex;
+    justify-content: baseline;
+
+ }
+
+ a{
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+ }

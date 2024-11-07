@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>Perfil</ion-title>
+    </div>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true">
+
+  <ion-card class="registro">
+    <ion-card-header>
+      <ion-card-title>Editar contraseña</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+      <h2  class="subtitulos">Ingrese su contraseña actual</h2>
+      <ion-item>
+        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+      <ion-input placeholder="Contraseña" [type]="mostrarPassword ? 'text' : 'password'" formControlName="passwordActual" required></ion-input>
+      <ion-icon [name]="mostrarPassword ? 'eye-off-outline' : 'eye-outline'" slot="end" (click)="verPassword()"></ion-icon>
+      </ion-item>
+      <h2  class="subtitulos">Ingrese su nueva contraseña (Minimo 8 digitos, una mayuscula, un numero y un simbolo) </h2>
+      <ion-item>
+        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+      <ion-input placeholder="Contraseña" [type]="mostrarPassword3 ? 'text' : 'password'" formControlName="password" required></ion-input>
+      <ion-icon [name]="mostrarPassword3 ? 'eye-off-outline' : 'eye-outline'" slot="end" (click)="verPassword3()"></ion-icon>
+      </ion-item>
+      <div *ngIf="formulario.get('password')?.invalid && formulario.get('password')?.touched">
+        <ion-text color="danger" *ngIf="formulario.get('password')?.errors?.['required']">Debe Ingresar la Contraseña</ion-text>
+        <ion-text color="danger" *ngIf="formulario.get('password')?.errors?.['minlength']">La contraseña debe contener 8 caracteres o más</ion-text>
+        <ion-text color="danger" *ngIf="formulario.get('password')?.errors?.['validezPassword']">La contraseña debe incluir una mayuscula, un numero y un simbolo</ion-text>
+      </div>
+      <h2 class="subtitulos">Confirme su nueva contraseña</h2>
+      <ion-item>
+        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+        <ion-input placeholder="Confirmar Contraseña" [type]="mostrarPassword2 ? 'text' : 'password'" formControlName="password2" required></ion-input>
+        <ion-icon [name]="mostrarPassword2 ? 'eye-off-outline' : 'eye-outline'" slot="end" (click)="verPassword2()"></ion-icon>
+      </ion-item>
+      <div *ngIf="formulario.get('password2')?.invalid && formulario.get('password2')?.touched">
+        <ion-text color="danger" *ngIf="formulario.get('password2')?.errors?.['required']">Debe confirmar la contraseña</ion-text>
+      </div>
+      <div *ngIf="formulario.errors?.['passwordsMismatch'] && formulario.get('password2')?.touched">
+        <ion-text color="danger">Las contraseñas no coinciden</ion-text>
+      </div>
+
+      <button mat-fab extended class="boton-registro" color="primary" type="submit"  [disabled]="formulario.invalid" >
+        <mat-icon>password</mat-icon>
+        Actualizar contraseña
+      </button>
+      <br>
+      <br>
+
+    </form>
+
+    <!--   <form>
+        <h2  class="subtitulos">Ingrese su actual contraseña </h2>
+         <ion-item>
+          <ion-label  position="floating">Contraseña:  </ion-label>
+          <ion-input [(ngModel)]="passwordActual" name="password" type="password" required></ion-input>
+        </ion-item>
+        <h2  class="subtitulos">Ingrese su nueva contraseña (recuerde el minimo de 8 digitos, una mayuscula, un numero y un simbolo)</h2>
+         <ion-item>
+          <ion-label  position="floating">Contraseña:  </ion-label>
+          <ion-input [(ngModel)]="password" name="password" type="password" required></ion-input>
+        </ion-item>
+        <h2  class="subtitulos">Ingrese su nueva contraseña nuevamente</h2>
+        <ion-item>
+          <ion-label  position="floating">Contraseña nuevamente: </ion-label>
+          <ion-input class="mi-input"   [(ngModel)]="password2" name="password" type="password" required></ion-input>
+        </ion-item>
+        
+      </form>
+      <button mat-fab extended class="boton-registro" color="primary" (click)="editarPassword()">
+        <mat-icon>password</mat-icon>
+        Actualizar contraseña
+      </button> -->
+    </ion-card-content>
+  </ion-card>
+  
+<!--   <ion-item>
+    <ion-label  position="floating">Contraseña:  </ion-label>
+    <ion-input  [(ngModel)]="password" name="password" type="password" required value="hola12345"></ion-input>
+  </ion-item>
+ -->
+</ion-content>

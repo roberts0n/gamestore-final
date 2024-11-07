@@ -1,0 +1,49 @@
+<ion-header >
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>Administrador</ion-title>
+    </div>
+     <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons> 
+     <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header> 
+
+
+<ion-content [fullscreen]="true">
+
+  <h1 class="ion-text-center">Funciones de administracion</h1>
+
+  <div class="admin-registro ion-text-center">
+    <h2>Registrar juevo nuevo</h2>
+    <button [routerLink]="['/registro-juego']" routerLinkActive="router-link-active"  mat-fab extended class="boton-registro" color="primary">
+      <mat-icon svgIcon="upload2"></mat-icon>
+      Registrar juego
+    </button>
+  </div>
+
+  <div class="admin-editar ion-text-center">
+    <h2>Editar juegos o Eliminar juegos</h2>
+    <button mat-fab extended class="boton-registro" color="primary" [routerLink]="['/editar-juegos']" routerLinkActive="router-link-active" >
+      <mat-icon >edit</mat-icon>
+      Editar/Eliminar
+    </button>
+  </div>
+
+  <div class="admin-editar ion-text-center">
+    <h2>Administrar cuentas</h2>
+    <button mat-fab extended class="boton-registro" color="primary" [routerLink]="['/editar-cuentas']" routerLinkActive="router-link-active" >
+      <mat-icon svgIcon="user"></mat-icon>
+      Administrar
+    </button>
+
+  </div>
+
+  
+
+
+</ion-content>

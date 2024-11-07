@@ -1,0 +1,73 @@
+
+
+.texto{
+    color: black;
+    margin: 5px;
+}
+
+.descripcion{
+    padding: 5px;
+    border-radius: 15px;
+    border: 2px solid #000000; 
+    margin-top: 50px;
+    background: rgba(138, 235, 218, 0.6) ;
+    box-shadow: 0 4px 8px rgba($color: #000000, $alpha: 1.0);
+}
+
+.marca {
+    background-image: url('../../../assets/img/playstation.svg');
+    background-size: cover;
+  }
+
+swiper-container{
+  width: 100%;
+  height: 100%;
+}
+
+swiper-slide{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.boton-desc{
+    margin-left: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    max-width: 200px;
+    color: white;
+    background-color: rgba(18, 141, 79, 0.705);
+  }
+
+  .boton-desc2{
+    color: white;
+    margin-left: 15px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    max-width: 200px;
+    background-color: rgba(170, 161, 34, 0.692);
+  }
+
+.imagen-descripcion{
+    border-radius: 20px;
+    border: 2px solid #000000; 
+    box-shadow: 0 4px 8px rgba($color: #000000, $alpha: 0.5);
+  }
+
+.desc{
+    margin-top: 20px;
+    padding: 5px;
+    border-radius: 10px;
+    background: rgba(138, 235, 218, 0.4) ;
+    border: 1px solid rgba(138, 235, 218, 0.1); 
+
+}
+
+
+.botones{
+  display: flex;
+  justify-content: center;
+}

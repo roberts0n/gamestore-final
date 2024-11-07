@@ -1,0 +1,138 @@
+<ion-header>
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>Carro</ion-title>
+    </div>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-card class="lista">
+    <ion-card-header>
+      <h1 class="ion-text-center sombra subtitulos">Mi carro</h1>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list class="lista2" *ngIf="juegosCarro.length > 0; else carroVacio">
+        <ion-item class="lista-item" *ngFor="let juego of juegosCarro">
+          <ion-thumbnail slot="start">
+            <img alt="Silhouette of mountains" [src]="juego.imagen" />
+          </ion-thumbnail>
+          <div class="columnas">
+            <ion-grid>
+              <ion-row>
+                <ion-col size="12">
+                  <h1>{{ juego.nombre_juego }}</h1>
+                  <h2 class="carro-subs">Precio: ${{ juego.subtotal }}</h2>
+                  <h2 class="carro-subs">Plataforma:  {{ juego.nombre_plataforma }}</h2>
+                </ion-col>
+                <ion-col size="12" class="deleteado">
+                  <button mat-mini-fab class="boton-delete" (click)="botonEliminar(juego.id_juego)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>  
+          </div>
+        </ion-item>
+      </ion-list>
+
+      <!-- Solo mostrar si hay juegos en el carrito -->
+      <div class="precio" slot="end" *ngIf="juegosCarro.length > 0">
+        <h1 class="ion-text-center sombra">Total : ${{ totalCarro }}</h1>
+      </div>
+
+      <button mat-fab extended class="boton" color="primary" (click)="botonCompra()" *ngIf="juegosCarro.length > 0">
+        <mat-icon svgIcon="buy"></mat-icon>
+        Comprar
+      </button>
+    </ion-card-content>
+
+    <ng-template #carroVacio>
+      <div text-center>
+        <h2>Tu carrito está vacío</h2>
+        <h5>¡Añade algunos juegos para comenzar a comprar!</h5>
+      </div>
+    </ng-template>
+  </ion-card>
+
+<!--   <ng-template #carroVacio>
+    <div text-center class="lista">
+      <h2>Tu carrito está vacío</h2>
+      <p>¡Añade algunos juegos para comenzar a comprar!</p>
+    </div>
+  </ng-template>
+ -->
+</ion-content>
+
+<!-- <ion-header>
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>Carro</ion-title>
+    </div>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+     <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header> 
+<ion-content [fullscreen]="true">
+  
+  <ion-card class="lista">
+    <ion-card-header>
+      <ion-card-title class="ion-text-center sombra">Mi carro</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list class="lista2" *ngIf="juegosCarro.length > 0; else carroVacio">
+        <ion-item class="lista-item" *ngFor="let juego of juegosCarro">
+          <ion-thumbnail slot="start">
+            <img alt="Silhouette of mountains" [src]="juego.imagen" />
+          </ion-thumbnail>
+          <div class="columnas">
+            <ion-grid>
+              <ion-row>
+                <ion-col size="6">
+                  <ion-label>{{ juego.nombre_juego }}</ion-label>
+                  <ion-label>{{ juego.subtotal }}</ion-label>
+                </ion-col>
+                <ion-col size="6" class="deleteado">
+                  <button mat-mini-fab class="boton-delete" (click)="botonEliminar()">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+        </ion-item>
+      </ion-list>
+      <div class="precio" slot="end">
+        <h1 class="ion-text-center sombra">Total : {{totalCarro}}</h1>
+      </div>
+      <button mat-fab extended class="boton" color="primary" (click)="botonCompra()">
+        <mat-icon svgIcon="buy"></mat-icon>
+        Comprar
+      </button>
+    </ion-card-content>
+  </ion-card>
+
+  <ng-template #carroVacio>
+    <div text-center>
+      <h2>Tu carrito está vacío</h2>
+      <p>¡Añade algunos juegos para comenzar a comprar!</p>
+    </div>
+  </ng-template>
+
+</ion-content>
+ -->
+
+<app-tabs></app-tabs>

@@ -1,0 +1,223 @@
+  <ion-header >
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>Inicio</ion-title>
+    </div>
+    <!-- <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons> -->
+     <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header> 
+
+
+ <ion-content padding >
+
+  <div class="titulasaso">
+    <h1 class="ion-text-center">Ephinea Store</h1>
+  </div>
+  <div class="logo-grande">
+    <ion-img src="../../../assets/img/logo.png" alt="" style="width: 100px;"></ion-img>
+  </div>
+
+  <br>
+  <br>
+  <br>
+
+  
+
+<h1 class="ion-text-center">Buscas un juego en especifico?</h1>
+<ion-searchbar [(ngModel)]="searchTerm" (ionInput)="onSearch($event)"  placeholder="Buscar juegos : " ></ion-searchbar>
+
+<br>
+<br>
+
+
+<ion-grid>
+  <div class="destacados" *ngIf="busquedaRealizada && juegosFiltrados.length > 0">
+  <ion-row>
+    <ion-col size="12"  *ngFor="let x of juegosFiltrados">
+      <ion-card class="carta">
+        <img alt="ffxvi" src="{{x.imagen}}" class="ion-width-100 imgcarta"/>
+        <ion-card-header>
+          <ion-card-title class="ion-text-center">{{x.nombre_juego}}</ion-card-title>
+        </ion-card-header>
+        <h4 class="ion-margin">Plataforma: {{x.nombre_plataforma}}  <mat-icon svgIcon="{{x.nombre_plataforma}}" class="plat"></mat-icon> </h4>
+        <h4 class="ion-margin">Cantidad: {{x.nombre_categoria}} </h4>
+        <h5 class="ion-margin">Precio : ${{x.precio}}</h5>
+        <button mat-fab extended class="boton" color="primary" (click)="verDescripcion(x.id_juego)" >
+          <mat-icon svgIcon="buy"></mat-icon>
+          Ver informacion del juego
+        </button>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</div> 
+</ion-grid>
+
+<div class="sin-resultados" *ngIf="busquedaRealizada &&  juegosFiltrados.length === 0">
+  <h2 class="ion-text-center">No se encontraron resultados</h2>
+</div>
+
+
+  <div class="plataformas">
+    <ion-grid>
+      <ion-title class="ion-text-center ion-padding">Plataformas</ion-title>
+      <ion-row>
+        <ion-col size="5.5" class="ion-text-center expositor movimiento ion-padding" (click)="irPlataforma(1,'Steam')">
+          <img src="../../../assets/img/steam.svg" alt="" style="width: 80px;">
+          <p>Steam</p>
+        </ion-col>
+        <ion-col size="5.5" class="ion-text-center expositor movimiento ion-padding" (click)="irPlataforma(4,'Switch')">
+          <img src="../../../assets/img/nintendo-switch.svg" alt="" style="width: 80px;">
+          <p>Switch</p>
+        </ion-col>
+        <ion-col size="5.5" class="ion-text-center expositor movimiento ion-padding" (click)="irPlataforma(3,'Xbox')">
+          <img src="../../../assets/img/xbox.svg" alt="" style="width: 80px;">
+          <p>Xbox</p>
+        </ion-col>
+        <ion-col size="5.5" class="ion-text-center expositor movimiento ion-padding" (click)="irPlataforma(2,'Playstation')">
+          <img src="../../../assets/img/playstation.svg" alt="" style="width: 80px;">
+          <p>Playstation</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <div class="categorias">
+    <ion-grid>
+      <ion-title class="ion-text-center ion-padding">Categorias</ion-title>
+      <ion-row>
+        <ion-col class="ion-text-center expositor2 movimiento" (click)="irCategoria(1,'Accion')">
+          <img src="../../../assets/img/sword.webp" alt="" style="width: 80px;">
+          <p>Accion</p>
+        </ion-col>
+        <ion-col class="ion-text-center expositor2 movimiento" (click)="irCategoria(2,'RPG')">
+          <img src="../../../assets/img/chess.png" alt="" style="width: 80px;">
+          <p>RPG</p>
+        </ion-col>
+        <ion-col class="ion-text-center expositor2 movimiento" (click)="irCategoria(3,'Deportes')">
+          <img src="../../../assets/img/basket.png" alt="" style="width: 80px;">
+          <p>Deportes</p>
+        </ion-col>
+        <ion-col class="ion-text-center expositor2 movimiento" (click)="irCategoria(4,'Aventura')">
+          <img src="../../../assets/img/aventura.svg" alt="" style="width: 80px;">
+          <p>Aventura</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+
+
+  <ion-grid>
+    <div class="destacados">
+      <h1 class="ion-text-center ion-padding">Algunos de nuestros juegos!</h1>
+    <ion-row>
+      <ion-col size="12"  *ngFor="let x of arregloJuegosRandom">
+        <ion-card class="carta">
+          <img alt="ffxvi" src="{{x.imagen}}" class="ion-width-100"/>
+          <ion-card-header>
+            <ion-card-title class="ion-text-center">{{x.nombre_juego}}</ion-card-title>
+          </ion-card-header>
+          <h4 class="ion-margin">{{x.nombre_plataforma}}  <mat-icon svgIcon="{{x.nombre_plataforma}}" class="plat"></mat-icon> </h4>
+          <h4 class="ion-margin">{{x.nombre_categoria}} </h4>
+          <h5 class="ion-margin">Precio : ${{x.precio}}</h5>
+          <button mat-fab extended class="boton" color="primary" (click)="verDescripcion(x.id_juego)" >
+            <mat-icon svgIcon="buy"></mat-icon>
+            Ver informacion del juego
+          </button>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </div> 
+  </ion-grid>
+
+
+  <ion-grid>
+    <div class="destacados">
+      <h1 class="ion-text-center ion-padding">Proximos lanzamientos disponibles en nuestra tienda!</h1>
+    <ion-row>
+      <ion-col size="12"  *ngFor="let juego of juegosProximos">
+        <ion-card class="carta">
+          <img alt="ffxvi" src="{{juego.image}}" class="ion-width-100"/>
+          <ion-card-header>
+            <ion-card-title class="ion-text-center">{{juego.name}}</ion-card-title>
+          </ion-card-header>
+          <h4 class="ion-margin">Fecha de lanzamiento : {{juego.releaseDate}} </h4>
+          <h5 class="ion-margin">Plataformas: {{ juego.platforms.join(', ') }}</h5>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </div> 
+  </ion-grid>
+
+
+  
+ </ion-content>
+
+
+<app-tabs></app-tabs>
+
+ <!-- <ion-footer>
+  <ion-toolbar>
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button [routerLink]="['/inicio']" routerLinkActive="router-link-active"  tab="inicio">
+        <ion-icon name="library"></ion-icon>
+        Inicio
+      </ion-tab-button>
+      <ion-tab-button tab="radio" [routerLink]="['/carro']" routerLinkActive="router-link-active" >
+        <ion-icon name="cash-outline"></ion-icon>
+        Carro
+      </ion-tab-button>
+      <ion-tab-button [routerLink]="['/perfil']" routerLinkActive="router-link-active"  tab="home">
+        <ion-icon name="person-circle-outline"></ion-icon>
+        Mi perfil
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-toolbar>
+</ion-footer> -->
+ <!-- <ion-footer>
+  <ion-toolbar color="dark">
+  <h1>holaaaa</h1>
+</ion-toolbar>
+ </ion-footer> -->
+
+
+ 
+<!--  <ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="home">
+      <ion-icon name="play-circle"></ion-icon>
+      Listen Now
+    </ion-tab-button>
+    <ion-tab-button tab="radio">
+      <ion-icon name="radio"></ion-icon>
+      Radio
+    </ion-tab-button>
+    <ion-tab-button tab="library">
+      <ion-icon name="library"></ion-icon>
+      Library
+    </ion-tab-button>
+    <ion-tab-button tab="search">
+      <ion-icon name="search"></ion-icon>
+      Search
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
+
+ -->
+
+
+ <!-- <ion-button fill="solid" class="boton" color="secondary">  
+              Comprar
+              <ion-icon name="card-outline"></ion-icon>
+            </ion-button> -->
+            <!-- <ion-button fill="solid" class="boton2" color="warning">  
+              Añadir a lista de deseos
+              <ion-icon name="star-outline"></ion-icon>
+            </ion-button> -->

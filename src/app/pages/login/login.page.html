@@ -1,0 +1,107 @@
+<ion-header>
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>Inicio de sesion</ion-title>
+    </div>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header> 
+
+
+<!-- <app-header></app-header> -->
+
+<ion-content [fullscreen]="true">
+
+  <div class="titulasaso">
+    <h1 class="ion-text-center">Ephinea Store</h1>
+  </div>
+  <div class="logo-grande">
+    <ion-img src="../../../assets/img/logo.png" alt="" style="width: 100px;"></ion-img>
+  </div>
+
+  <ion-card class="login">
+    <ion-card-header>
+    </ion-card-header>
+    <ion-card-content>
+
+      <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+        <h2 class="subtitulos">Ingrese su usuario</h2>
+            <ion-item>
+              <ion-icon name="person-outline" slot="start"></ion-icon>
+              <ion-input placeholder="Usuario:" formControlName="usuario" type="text"></ion-input>
+            </ion-item>
+            <div *ngIf="formulario.get('usuario')?.invalid && formulario.get('usuario')?.touched">
+              <ion-text color="danger" *ngIf="formulario.get('usuario')?.errors?.['required']">No puede dejar el campo vacio</ion-text>
+            </div>
+            <br>
+        <h2 class="subtitulos">Ingrese su Contraseña</h2>
+            <ion-item>
+              <ion-input placeholder="Contraseña" [type]="mostrarPassword  ? 'text' : 'password'" formControlName="password" required></ion-input>
+              <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+              <ion-icon [name]="mostrarPassword ? 'eye-off-outline' : 'eye-outline'" slot="end" (click)="verPassword()"></ion-icon>
+            </ion-item>
+            <div *ngIf="formulario.get('password')?.invalid && formulario.get('password')?.touched">
+              <ion-text color="danger" *ngIf="formulario.get('password')?.errors?.['required']">Debe Ingresar la contraseña</ion-text>
+              <ion-text color="danger" *ngIf="formulario.get('password')?.errors?.['minlength']">La contraseña debe contener 8 caracteres o más</ion-text>
+            </div>
+            <br>
+            <a [routerLink]="['/recuperar-clave']" routerLinkActive="router-link-active" class="olvidar">Olvidaste tu contraseña? Presiona aqui</a>
+            <br>
+            <div class="botones-login">
+              <button  type="submit" (click)="verificarLogin()" mat-fab extended class="boton-login ion-padding" [disabled]="formulario.invalid" color="primary">
+                <mat-icon >login</mat-icon>
+                Iniciar sesion
+              </button>
+              <button [routerLink]="['/registro']" routerLinkActive="router-link-active" mat-fab extended class="boton-registrar ion-padding" color="">
+                <mat-icon >create</mat-icon>
+                Registrarse
+              </button>
+            </div>
+            <br>
+      </form>
+    
+    </ion-card-content>
+  </ion-card>
+
+  <br>
+  <br>
+  <br>
+
+
+ <!--  <ion-card class="login">
+    <ion-card-header>
+    </ion-card-header>
+    <ion-card-content>
+    
+      <h2 class="subtitulos">Ingrese su usuario</h2>
+        <ion-item>
+          <ion-label position="floating">Usuario: </ion-label>
+          <ion-input [(ngModel)]="usuario" name="usuario" type="text" required></ion-input>
+        </ion-item>
+        <br>
+        <h2 class="subtitulos">Ingrese su Contraseña</h2>
+        <ion-item>
+          <ion-label  position="floating">Contraseña: </ion-label>
+          <ion-input  [(ngModel)]="password" name="password" type="password" required></ion-input>
+        </ion-item>
+        <br>
+        <a [routerLink]="['/recuperar-clave']" routerLinkActive="router-link-active" class="olvidar">Olvidaste tu contraseña? Presiona aqui</a>
+        <br>
+        <div class="botones-login">
+          <button (click)="verificarLogin()" mat-fab extended class="boton-login ion-padding" color="primary">
+            <mat-icon >login</mat-icon>
+            Iniciar sesion
+          </button>
+          <button [routerLink]="['/registro']" routerLinkActive="router-link-active" mat-fab extended class="boton-registrar ion-padding" color="">
+            <mat-icon >create</mat-icon>
+            Registrarse
+          </button>
+        </div>
+    </ion-card-content>
+  </ion-card> -->
+</ion-content>
+
+<ion-footer></ion-footer>

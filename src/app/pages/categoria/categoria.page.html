@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>{{filtro}}</ion-title>
+    </div>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header> 
+
+<!-- <app-header></app-header> -->
+
+
+
+
+<ion-content [fullscreen]="true">
+
+  <ion-grid *ngIf="arregloJuegos.length > 0; else categoriaVacia">
+    <div class="destacados">
+      <div class="titulo">
+        <h1 class="ion-text-center ion-padding">Categoria : {{titulo}} </h1>
+        <!-- <ion-img src="../../../assets/img/sword.webp" class="logo2" style="width: 30px;"></ion-img> -->
+      </div>
+    <ion-row>
+      <ion-col size="12"  *ngFor="let x of arregloJuegos">
+        <ion-card class="carta">
+          <img alt="ffxvi" src="{{x.imagen}}" class="ion-width-100"/>
+          <ion-card-header>
+            <ion-card-title class="ion-text-center">{{x.nombre_juego}}</ion-card-title>
+          </ion-card-header>
+          <h4 class="ion-margin">{{x.nombre_plataforma}}  <mat-icon svgIcon="{{x.nombre_plataforma}}" class="plat"></mat-icon></h4>
+          <h4 class="ion-margin">{{x.nombre_categoria}} </h4>
+          <h5 class="ion-margin">Precio : ${{x.precio}}</h5>
+          <button mat-fab extended class="boton" color="primary" (click)="verDescripcion(x.id_juego)" >
+            <mat-icon svgIcon="buy"></mat-icon>
+            Ver informacion del juego
+          </button>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </div> 
+  </ion-grid>
+
+  <ng-template #categoriaVacia>
+    <ion-card text-center class="lista-deseos">
+      <ion-card-header>
+        <h1 class="ion-text-center sombra subtitulos">No hay juegos!</h1>
+      </ion-card-header>
+      <ion-card-content>
+       <p>La categoria esta vacia</p>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+
+<br>
+</ion-content>
+
+
+<app-tabs></app-tabs>

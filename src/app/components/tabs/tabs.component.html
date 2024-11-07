@@ -1,0 +1,24 @@
+<ion-footer color="barras" *ngIf="!keyboardOpen">
+  <ion-toolbar>
+  <ion-tabs >
+    <ion-tab-bar slot="bottom" color="barras">
+      <ion-tab-button [routerLink]="['/inicio']" routerLinkActive="router-link-active" >
+        <ion-icon name="home-outline"></ion-icon>
+        Inicio
+      </ion-tab-button>
+      <ion-tab-button [routerLink]="['/carro']" routerLinkActive="router-link-active" >
+        <ion-icon name="cash-outline"></ion-icon>
+        Carro
+      </ion-tab-button>
+      <ion-tab-button [routerLink]="['/perfil']" routerLinkActive="router-link-active" >
+        <ion-icon name="person-circle-outline"></ion-icon>
+        Mi perfil
+      </ion-tab-button>
+      <ion-tab-button [routerLink]="['/deseos']" routerLinkActive="router-link-active" >
+        <ion-icon name="star-outline"></ion-icon>
+        Deseados
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-toolbar>
+</ion-footer>

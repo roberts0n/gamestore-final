@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>Error</ion-title>
+    </div>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header> 
+<ion-content [fullscreen]="true">
+  
+<ion-grid>
+  <ion-row>
+
+    <div class="menu">
+      <ion-col size="6">
+      <h1>La pagina que intentas visitar no existe</h1>
+      </ion-col>
+      <ion-col size="6">
+        <button mat-fab extended class="boton-vuelta" color="primary" [routerLink]="['/inicio']" routerLinkActive="router-link-active" >
+          Volver al inicio
+        </button>
+      </ion-col>
+    </div>
+  </ion-row>
+</ion-grid>
+</ion-content>

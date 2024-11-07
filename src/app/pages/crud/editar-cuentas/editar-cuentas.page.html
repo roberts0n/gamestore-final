@@ -1,0 +1,62 @@
+<ion-header >
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>Administrador</ion-title>
+    </div>
+   <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons> 
+     <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header> 
+
+
+
+<ion-content [fullscreen]="true">
+
+  <ion-grid>
+    <div class="menu-editar">
+      <h1 class="ion-text-center ion-padding">Cuentas registradas</h1>
+    <ion-row>
+      <ion-col size="12">
+        <ion-card class="carta" *ngFor="let x of arregloUsuarios">
+          <ion-card-header>
+            <ion-card-title class="ion-text-center">Usuario: {{x.nombre}}</ion-card-title>
+            <h5 *ngIf="x.id_rol === 2" class="ion-text-center" style="color: black;">Cuenta de Administrador</h5>
+            <h5 *ngIf="x.id_rol === 1" class="ion-text-center" style="color: black;">Cuenta de Cliente</h5>
+          </ion-card-header>
+          <div class="botones ion-margin">
+            <button mat-fab extended class="boton"  (click)="desbloquear(x.idUsuario)">
+              <mat-icon>lock_open</mat-icon>
+              Desbloquear
+            </button>
+            
+            <button  style="margin-left: 10px;" mat-fab extended class="boton2" color="primary" (click)="bloquear(x.idUsuario)">
+              <mat-icon >lock</mat-icon>
+              Bloquear
+            </button>
+          </div>
+
+          <div class="botones ion-margin">
+
+            <button mat-fab extended class="boton"  (click)="darAdmin(x.idUsuario)">
+              <mat-icon>verified_user</mat-icon>
+              Dar admin
+            </button>
+
+            <button  style="margin-left: 10px;" mat-fab extended class="boton2" color="primary" (click)="quitarAdmin(x.idUsuario)">
+              <mat-icon >clear</mat-icon>
+              Quitar admin
+            </button>
+          </div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </div> 
+  </ion-grid>
+
+
+</ion-content>

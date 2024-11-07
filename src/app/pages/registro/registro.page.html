@@ -1,0 +1,110 @@
+<ion-header>
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>Registro</ion-title>
+    </div>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header> 
+
+<ion-content [fullscreen]="true">
+  
+  <ion-card class="registro">
+    <ion-card-header>
+      <ion-card-title>Registro</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+
+      <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+        <h2  class="subtitulos">Ingrese su correo</h2>
+        <ion-item>
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-input placeholder="Correo" formControlName="email" type="text" required></ion-input>
+        </ion-item>
+        <div *ngIf="formulario.get('email')?.invalid && formulario.get('email')?.touched">
+          <ion-text color="danger" *ngIf="formulario.get('email')?.errors?.['required']">No puedes dejar el campo vacio</ion-text>
+          <ion-text color="danger" *ngIf="formulario.get('email')?.errors?.['email']">El formato de correo ingresado no es correcto</ion-text>
+        </div>
+        <h2  class="subtitulos">Ingrese su nombre de usuario</h2>
+        <ion-item>
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+          <ion-input placeholder="Nombre de Usuario" formControlName="usuario" type="text" required></ion-input>
+        </ion-item>
+        <div *ngIf="formulario.get('usuario')?.invalid && formulario.get('usuario')?.touched">
+          <ion-text color="danger" *ngIf="formulario.get('usuario')?.errors?.['required']">No puedes dejar el campo vacio.</ion-text>
+          <ion-text color="danger" *ngIf="formulario.get('usuario')?.errors?.['minlength']">Minimo 4 caracteres.</ion-text>
+        </div>
+        <h2  class="subtitulos">Ingrese su contraseña (Minimo 8 digitos, una mayuscula, un numero y un simbolo) </h2>
+        <ion-item>
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+        <ion-input placeholder="Contraseña" [type]="mostrarPassword ? 'text' : 'password'" formControlName="password" required></ion-input>
+        <ion-icon [name]="mostrarPassword ? 'eye-off-outline' : 'eye-outline'" slot="end" (click)="verPassword()"></ion-icon>
+        </ion-item>
+        <div *ngIf="formulario.get('password')?.invalid && formulario.get('password')?.touched">
+          <ion-text color="danger" *ngIf="formulario.get('password')?.errors?.['required']">Debe Ingresar la Contraseña.</ion-text>
+          <ion-text color="danger" *ngIf="formulario.get('password')?.errors?.['minlength']">La contraseña debe contener 8 caracteres o más.      </ion-text>
+          <ion-text color="danger" *ngIf="!formulario.get('password')?.errors?.['minlength'] && formulario.get('password')?.errors?.['validezPassword']">
+            La contraseña debe incluir una mayúscula, un número y un símbolo.
+          </ion-text>
+        </div>
+        <h2 class="subtitulos">Confirme su contraseña</h2>
+        <ion-item>
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input placeholder="Confirmar Contraseña" [type]="mostrarPassword2 ? 'text' : 'password'" formControlName="password2" required></ion-input>
+          <ion-icon [name]="mostrarPassword2 ? 'eye-off-outline' : 'eye-outline'" slot="end" (click)="verPassword2()"></ion-icon>
+        </ion-item>
+        <div *ngIf="formulario.get('password2')?.invalid && formulario.get('password2')?.touched">
+          <ion-text color="danger" *ngIf="formulario.get('password2')?.errors?.['required']">Debe confirmar la contraseña</ion-text>
+        </div>
+        <div *ngIf="formulario.get('password2')?.value && formulario.errors?.['passwordsMismatch'] && formulario.get('password2')?.touched">
+          <ion-text color="danger">Las contraseñas no coinciden</ion-text>
+        </div>
+
+        <button  mat-fab extended class="boton-login ion-padding" type="submit"  [disabled]="formulario.invalid" color="primary">
+          <mat-icon >login</mat-icon>
+          Registrarse
+        </button>
+      
+      </form>
+
+
+    <!--   <form>
+        <h2  class="subtitulos">Ingrese su correo</h2>
+        <ion-item>
+          <ion-label position="floating">Correo: </ion-label>
+          <ion-input [(ngModel)]="email" name="email" type="email" required></ion-input>
+        </ion-item>
+        <br>
+        <h2  class="subtitulos">Ingzrese su nombre de usuario</h2>
+        <ion-item>
+          <ion-label position="floating">Usuario</ion-label>
+          <ion-input [(ngModel)]="usuario" name="usuario" type="text" required></ion-input>
+        </ion-item>
+        <br>
+        <h2  class="subtitulos">Ingrese su contraseña (Minimo 8 digitos, una mayuscula, un numero y un simbolo) </h2>
+        <ion-item>
+          <ion-label  position="floating">Contraseña</ion-label>
+          <ion-input [(ngModel)]="password" name="password" type="password" required></ion-input>
+        </ion-item>
+        <br>
+        <h2 class="subtitulos">Ingrese su contraseña nuevamente</h2>
+        <ion-item>
+          <ion-label  position="floating">Contraseña nuevamente:</ion-label>
+          <ion-input [(ngModel)]="password2" name="password2" type="password" required></ion-input>
+        </ion-item>
+      </form>
+      <button (click)="registrar()" mat-fab extended class="boton-login ion-padding" type="submit" color="primary">
+        <mat-icon >login</mat-icon>
+        Registrarse
+      </button>
+ -->
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

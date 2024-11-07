@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>Descripcion</ion-title>
+    </div>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+     <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header> 
+
+
+<ion-content [fullscreen]="true">
+
+  <mat-card class="descripcion" appearance="outlined" *ngIf="juego">
+    <mat-card-header>
+      <!-- <div mat-card-avatar class="marca"></div> -->
+       <mat-icon mat-card-avatar svgIcon="{{juego.nombre_plataforma}}"></mat-icon> 
+      <mat-card-title>{{juego.nombre_juego}}</mat-card-title>
+      <mat-card-subtitle class="texto">{{juego.nombre_plataforma}}</mat-card-subtitle>
+    </mat-card-header>
+
+    <img mat-card-image src="{{juego.imagen}}" alt="imagen-juego" class="imagen-descripcion">
+
+  
+    <mat-card-content>
+      <p class="desc">
+       {{juego.descripcion}}
+      </p>
+      <br>
+      <swiper-container pagination navigation>
+        <swiper-slide *ngFor="let screenshot of screenshots">
+          <img [src]="screenshot" alt="Screenshot" class="imagen-descripcion"/>
+        </swiper-slide>
+      </swiper-container>
+      <br>
+      <mat-card-subtitle class="texto">Categoria: {{juego.nombre_categoria}}</mat-card-subtitle>
+      <mat-card-subtitle class="texto">Precio: ${{juego.precio}}</mat-card-subtitle>
+      <mat-card-subtitle class="texto">Valoracion: {{ juego.metacritic ? juego.metacritic : 'Valoracion desconocida' }}</mat-card-subtitle>
+      <mat-card-subtitle class="texto">Fecha de lanzamiento: {{juego.fecha_lanzamiento ? juego.fecha_lanzamiento : 'Fecha desconocida'}}</mat-card-subtitle>
+    </mat-card-content>
+    <div class="botones"  *ngIf="juego">
+      <button mat-fab extended class="boton-desc" color="primary" (click)="botonCompra(juego.id_juego)">
+        <mat-icon svgIcon="buy"></mat-icon>
+        Añadir al carro
+      </button>
+      <button mat-fab extended class="boton-desc2" (click)="botonDeseo(juego.id_juego)">
+        <mat-icon>star</mat-icon>
+        Añadir a la lista de deseos
+      </button>
+    </div>
+  </mat-card>
+
+  
+</ion-content>
+
+<app-tabs></app-tabs>

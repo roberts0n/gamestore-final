@@ -1,0 +1,120 @@
+
+.lista{
+    margin: 5px;
+    margin-top: 50px;
+    color: #000000;
+    box-shadow: 0 4px 8px rgba($color: #000000, $alpha: 1.0);
+    background-color: rgba(138, 235, 218, 0.4);
+    border-radius: 10px;
+    border: 1px groove  #000000; 
+}
+
+/* .lista-item{
+    color: #000000;
+    --ion-item-background: rgba(138, 235, 218, 0.8) ;
+    --border-color: rgba(138, 235, 218, 0.1);
+    --border-radius: 50px;
+     border: 2px solid #000000;  
+     --inner-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); 
+    
+}
+ */
+
+
+ion-item::part(native) {
+    background: rgba(138, 235, 218, 0.6) ;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    --border-radius: 50px;
+    --border-color: rgba(138, 235, 218, 0.1);
+ }
+
+ion-item.lista-item{
+    display: flex;
+    align-items: center; 
+   
+}
+ion-item.lista-item h1 {
+    flex: 1; 
+    margin-right: 10px; 
+    text-align: left; 
+}
+
+ ion-item.lista-item img {
+    border: 2px solid #000000; 
+    border-radius: 10px;
+    margin-left: 10px;
+    height: auto;
+    max-width: 150px;
+}
+
+.editar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000000;
+    background: rgba(74, 163, 147, 0.5) ;
+}
+.editar2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* .info{
+    margin-top: 20px;
+    background: rgba(138, 235, 218, 0.6) ;
+    border-radius: 50%;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    border: 2px solid #000000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+
+}
+
+.centrado{
+    display: flex;
+    justify-content: center;
+} */
+
+.cuadrado{
+    padding-top: 30px;
+    padding-bottom: 30px;
+    background: rgba(138, 235, 218, 0.6) ;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    border: 1px solid #000000;
+    border-radius: 15px; 
+    
+}
+
+.foto-perfil{
+    width: 200px;
+    height: 200px;
+    /* border-radius: 50%; */
+    object-fit: cover;
+    overflow: hidden;
+    border: 3px solid #000000; 
+}
+
+.subtitulo{
+    margin-top: -20px;
+}
+
+@media (max-width:424px)  {
+    .foto-perfil{
+        width: 150px;
+        height: 150px;
+    }
+    .subtitulo{
+        margin-top: 1px;
+    }
+    
+    
+}
+
+.centro{
+   /*  text-align: center; */
+}

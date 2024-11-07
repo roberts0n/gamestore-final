@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>Perfil</ion-title>
+    </div>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<!-- <app-header></app-header> -->
+
+<ion-content [fullscreen]="true">
+  <div class="">
+    <h1 class="ion-text-center sombra">Mi perfil</h1>
+    <div class="centrado">
+      <div class="info" *ngIf="usuario">
+        <ion-grid>
+          <ion-row class="cuadrado">
+            <ion-col size="6">
+              <img src="{{usuario.imagen || '../../../assets/img/guest.jpg'}}" width="" class="foto-perfil">
+            </ion-col>
+            <ion-col size="6" class="centro">
+              <h1 class="sombra ion-padding ion-text-center">{{usuario.nombre}}</h1>
+              <h5 class="ion-text-center subtitulo">{{usuario.email}}</h5>
+              <h5 class="ion-text-center">Edad : {{usuario.edad || 'Edad sin asignar'}}</h5>
+            </ion-col>
+            <ion-col class="editar2">
+              <!-- <ion-button>Editar perfil</ion-button> -->
+              <button mat-fab extended class="editar" [routerLink]="['/editar-perfil']" routerLinkActive="router-link-active" >
+                <mat-icon svgIcon="profile">favorite</mat-icon>
+                Editar perfil
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </div>
+    <ion-list class="lista" *ngIf="juegosCompra.length > 0; else compraVacia">
+      <h1 class="ion-text-center sombra">Tus juegos</h1>
+      <ion-item class="ion-padding lista-item"  lines="none" *ngFor="let juego of juegosCompra">
+        <h1>{{juego.nombre_juego}}</h1>
+        <img [src]="juego.imagen" alt="" width="150px" class="">
+      </ion-item>
+      <!-- <ion-item class="ion-padding lista-item "  lines="none">
+        <h1>Baldurs Gate 3</h1>
+        <img src="../../../assets/img/bg3.jpg" alt="" width="150px" class="">
+      </ion-item>
+      <ion-item class="ion-padding lista-item" lines="none">
+        <h1>Diablo 4</h1>
+        <img src="../../../assets/img/d4.png" alt="" width="150px" class="">
+      </ion-item> -->
+    </ion-list>
+
+
+    <ng-template #compraVacia>
+      <div text-center>
+        <h2>No has comprado nada todavia.</h2>
+        <p>Compra algunos juegos de nuestra tienda!</p>
+      </div>
+    </ng-template>
+  </div>
+ <br>
+</ion-content>
+
+<app-tabs></app-tabs>
+
+<!-- <ion-footer>
+  <ion-toolbar>
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button [routerLink]="['/inicio']" routerLinkActive="router-link-active"  tab="inicio">
+        <ion-icon name="library"></ion-icon>
+        Inicio
+      </ion-tab-button>
+      <ion-tab-button tab="radio" [routerLink]="['/carro']" routerLinkActive="router-link-active" >
+        <ion-icon name="cash-outline"></ion-icon>
+        Carro
+      </ion-tab-button>
+      <ion-tab-button [routerLink]="['/perfil']" routerLinkActive="router-link-active"  tab="home">
+        <ion-icon name="person-circle-outline"></ion-icon>
+        Mi perfil
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-toolbar>
+</ion-footer> -->

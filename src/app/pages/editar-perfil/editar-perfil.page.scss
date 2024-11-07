@@ -1,0 +1,85 @@
+.registro{
+    background-color: rgba(138, 235, 218, 0.6);
+    border: 1px solid #000000;
+    margin-top: 30px;
+
+}
+
+.login-inputs{
+    background-color: rgba(138, 235, 218, 0.6);
+    
+}
+
+.foto-perfil{
+    width: 200px;
+    height: 200px;
+    /* border-radius: 50%; */
+    object-fit: cover;
+    overflow: hidden;
+    border: 3px solid #000000; 
+}
+
+
+.div{
+    border: 1px solid black;
+    background: rgba(138, 235, 218, 0.6);
+}
+
+ion-item::part(native) {
+    background-color: rgba(138, 235, 218, 0.4);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    border: 1px groove  #000000; 
+ }
+
+ .subtitulos{
+    color: #000000;
+ }
+
+/*  .opciones{
+        --background: #4CAF50;
+        --color: #ffffff; 
+ }
+ */
+/*  .opciones .alert-wrapper{
+    --background: #00ff08; 
+  }
+ */
+
+.check{
+    font-size: 15px;
+    margin-top: 10px;
+    color: #000000;
+}
+
+.opciones .select-interface-option{
+    color: red;
+}
+
+ .boton-registro{
+    width: 250px;
+    color: #ffffff;
+    margin-top: 30px;
+
+}
+
+.subir-imagen{
+    display: none;
+}
+
+.subir2{
+    display: flex;
+    display: flex;
+    margin-left: 200px;
+    margin-bottom: 15px;
+}
+
+
+
+@media (max-width:424px)  {
+    .subir2{
+        margin-left: 130px;
+    }
+    
+    
+}
+

@@ -1,0 +1,45 @@
+<!-- <ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Mi Aplicación</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+<ion-menu side="end" menuId="menu" contentId="main-content">
+  <ion-header>
+    <ion-toolbar color="barras">
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <br>
+    <br>
+    <br>
+    <br>
+    <ion-list class="menu-lista">
+      <ion-menu-toggle autoHide="false">
+        <ion-item detail="true" [routerLink]="['/menu-admin']" routerLinkActive="router-link-active" *ngIf="estadoRol" >
+          <ion-label>Administrar pagina</ion-label>
+        </ion-item>
+        <ion-item detail="true"(click)="cerrarSesionAlert()" routerLinkActive="router-link-active" >
+          <ion-label>Cerrar sesion</ion-label>
+        </ion-item>
+    </ion-menu-toggle>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+
+<!--  <div class="ion-page" id="main-content"> 
+  <ion-router-outlet></ion-router-outlet>
+ </div>  -->
+
+
+
+<!--  <ion-item>
+  <ion-label>Dropdown</ion-label>
+  <ion-button expand="block" (click)="activarLista()"></ion-button>
+  <ion-list *ngIf="mostrarLista">
+    <ion-item href="#">Action</ion-item>
+    <ion-item href="#">Another action</ion-item>
+    <ion-item href="#">Something else here</ion-item>
+  </ion-list>
+</ion-item> -->

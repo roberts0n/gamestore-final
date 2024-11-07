@@ -1,0 +1,151 @@
+<ion-header >
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>Administrador</ion-title>
+    </div>
+   <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons> 
+     <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header> 
+
+
+<ion-content [fullscreen]="true">
+
+  
+
+  <ion-card class="registro">
+    <ion-card-header>
+      <ion-card-title>Registro de juego</ion-card-title>
+      <h5 class="subtitulos">Ingrese los datos del juego nuevo. (recuerda no dejar campos vacios)</h5>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+        <h2  class="subtitulos">Ingrese el nombre del juego:</h2>
+        <ion-item>
+          <ion-icon name="sparkles-outline"  slot="start"></ion-icon>
+          <ion-input placeholder="Nombre:" formControlName="nombre" type="text" required></ion-input>
+        </ion-item>
+        <div *ngIf="formulario.get('nombre')?.invalid && formulario.get('nombre')?.touched">
+          <ion-text color="danger" *ngIf="formulario.get('email')?.errors?.['required']">No puedes dejar el campo vacio</ion-text>
+        </div>
+        <h2 class="subtitulos">Ingrese la imagen:</h2>
+            <ion-item>
+              <ion-icon name="image-outline"  slot="start"></ion-icon>
+              <ion-button class="subir2" color="barras" (click)="takePicture()">Seleccionar imagen</ion-button>
+            </ion-item>
+            <div *ngIf="formulario.get('nombre')?.invalid && formulario.get('nombre')?.touched">
+              <ion-text color="danger" *ngIf="formulario.get('imagen')?.errors?.['required']">La imagen es obligatoria</ion-text>
+            </div>
+            <ion-item *ngIf="imagen">
+              <img [src]="imagen" alt="Imagen seleccionada" class="foto-perfil" />
+            </ion-item>
+            <h2 class="subtitulos">Ingrese la plataforma: </h2>
+            <ion-item>
+              <ion-icon name="game-controller-outline" slot="start"></ion-icon>
+              <ion-select formControlName="plataforma" placeholder="Selecciona plataforma" interface="alert" class="opciones">
+                <div slot="label">Plataforma</div>
+                <ion-select-option value="1">Steam</ion-select-option>
+                <ion-select-option value="2">Playstation</ion-select-option>
+                <ion-select-option value="3">Xbox</ion-select-option>
+                <ion-select-option value="4">Switch</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <h2 class="subtitulos">Ingrese la categoría: </h2>
+            <ion-item>
+              <ion-icon name="football-outline"  slot="start"></ion-icon>
+              <ion-select formControlName="categoria" placeholder="Selecciona categoría">
+                <div slot="label">Categoría</div>
+                <ion-select-option value="1">Acción</ion-select-option>
+                <ion-select-option value="2">RPG</ion-select-option>
+                <ion-select-option value="3">Deportes</ion-select-option>
+                <ion-select-option value="4">Aventura</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <h2 class="subtitulos">Ingrese la descripción: </h2>
+            <ion-item>
+              <ion-icon name="document-text-outline"  slot="start"></ion-icon>
+              <ion-input placeholder="Descripcion:" formControlName="descripcion" type="text" required></ion-input>
+            </ion-item>
+            <div *ngIf="formulario.get('descripcion')?.invalid && formulario.get('descripcion')?.touched">
+              <ion-text color="danger" *ngIf="formulario.get('descripcion')?.errors?.['required']">La descripción es obligatoria</ion-text>
+              <ion-text color="danger" *ngIf="formulario.get('descripcion')?.errors?.['minlength']">Debe tener al menos 10 caracteres</ion-text>
+            </div>
+            <h2 class="subtitulos">Ingrese el precio: </h2>
+            <ion-item>
+              <ion-icon name="cash-outline"  slot="start"></ion-icon>
+              <ion-input placeholder="Precio:" formControlName="precio" type="number" required></ion-input>
+            </ion-item>
+            <div *ngIf="formulario.get('precio')?.invalid && formulario.get('precio')?.touched">
+              <ion-text color="danger" *ngIf="formulario.get('precio')?.errors?.['required']">El precio es obligatorio</ion-text>
+              <ion-text color="danger" *ngIf="formulario.get('precio')?.errors?.['min']">Debe ser mayor que 1000</ion-text>
+            </div>
+    
+            <button mat-fab extended class="boton-registro" color="primary"  type="submit"  [disabled]="formulario.invalid">
+              <mat-icon>upload</mat-icon>
+              Registrar juego
+            </button>
+      
+      </form>
+
+
+
+      <!-- <form>
+        <h2 class="subtitulos">Ingrese el nombre del juego : </h2>
+        <ion-item>
+          <ion-label position="floating">Nombre  de juego: </ion-label>
+          <ion-input [(ngModel)]="nombreJuego" name="nombreJuego" type="text" required></ion-input>
+        </ion-item>
+        <h2 class="subtitulos">Ingrese la imagen : </h2>
+
+        <ion-item>
+          <ion-label position="floating">Imagen de juego </ion-label>
+          <input name="imagen" type="file" required class="subir-imagen">
+          <ion-button class="subir2" color="barras" (click)="takePicture()">Seleccionar imagen</ion-button>
+        </ion-item>
+        <h2 class="subtitulos">Ingrese la plataforma : </h2>
+        <ion-item>
+          <ion-select  [(ngModel)]="plataforma" name="plataforma" placeholder="Selecciona plataforma" interface="alert" class="opciones">
+            <div slot="label">Plataforma</div>
+            <ion-select-option value="1">Steam</ion-select-option>
+            <ion-select-option value="2">Playstation</ion-select-option>
+            <ion-select-option value="3">Xbox</ion-select-option>
+            <ion-select-option value="4">Switch</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <h2 class="subtitulos">Ingrese la categoria : </h2>
+        <ion-item>
+          <ion-select [(ngModel)]="categoria" name="categoria" placeholder="Selecciona categoria">
+            <div slot="label">Categoria</div>
+            <ion-select-option value="1">Accion</ion-select-option>
+            <ion-select-option value="2">RPG</ion-select-option>
+            <ion-select-option value="3">Deportes</ion-select-option>
+            <ion-select-option value="4">Aventura</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <h2 class="subtitulos">Ingrese la descripcion : </h2>
+        <ion-item>
+          <ion-label position="floating">Descripcion: </ion-label>
+          <ion-input [(ngModel)]="descripcion" name="descripcion" type="text" required></ion-input>
+        </ion-item>
+        <h2 class="subtitulos">Ingrese el precio : </h2>
+        <ion-item>
+          <ion-label position="floating">Precio: </ion-label>
+          <ion-input [(ngModel)]="precio" name="precio" type="number" required></ion-input>
+        </ion-item>
+      </form>
+      <button mat-fab extended class="boton-registro" color="primary" (click)="registroJuego()">
+        <mat-icon>upload</mat-icon>
+        Registrar juego
+      </button> -->
+
+    </ion-card-content>
+  </ion-card>
+  
+
+
+</ion-content>

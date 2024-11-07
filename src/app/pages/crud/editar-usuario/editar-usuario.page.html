@@ -1,0 +1,49 @@
+<ion-header >
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>Administrador</ion-title>
+    </div>
+   <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons> 
+     <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header> 
+
+
+<ion-content [fullscreen]="true">
+
+  <ion-card class="registro">
+    <ion-card-header>
+      <ion-card-title>Editar usuario</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form>
+        <ion-item>
+          <ion-label  position="floating">Usuario: </ion-label>
+          <ion-input  [(ngModel)]="usuario" name="usuario" type="text" required value="robertoleiva10"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label  position="floating">Correo:  </ion-label>
+          <ion-input  [(ngModel)]="email" name="email" type="email" required value="40000" value="rob.leiva@duocuc.cl"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label  position="floating">Contraseña:  </ion-label>
+          <ion-input  [(ngModel)]="password" name="password" type="password" required value="hola12345"></ion-input>
+        </ion-item>
+      </form>
+      <ion-checkbox class="check">Dar derechos de administrador</ion-checkbox>
+      <button mat-fab extended class="boton-registro" color="primary" (click)="editarUsuario()">
+        <mat-icon>upload</mat-icon>
+        Actualizar usuario
+      </button>
+
+    </ion-card-content>
+  </ion-card>
+  
+
+
+</ion-content>
