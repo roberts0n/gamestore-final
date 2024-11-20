@@ -17,7 +17,7 @@
 
 <ion-content [fullscreen]="true">
 
-  <ion-grid>
+  <ion-grid  *ngIf="arregloJuegos.length > 0; else juegosVacio">
     <div class="menu-editar">
       <h1 class="ion-text-center ion-padding">Juegos registrados</h1>
     <ion-row>
@@ -47,6 +47,20 @@
     </ion-row>
   </div> 
   </ion-grid>
+
+
+  <ng-template #juegosVacio>
+    <ion-card text-center class="mensaje ion-text-center">
+      <ion-card-header>
+        <h1 class="ion-text-center sombra subtitulos">No hay juegos registrados</h1>
+      </ion-card-header>
+    
+      <ion-card-content>
+       <p>No se han registrado juegos en la aplicacion</p>
+      </ion-card-content>
+    </ion-card>
+    
+  </ng-template>
 
 
 </ion-content>
