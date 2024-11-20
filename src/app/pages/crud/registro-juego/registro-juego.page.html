@@ -36,7 +36,7 @@
         <h2 class="subtitulos">Ingrese la imagen:</h2>
             <ion-item>
               <ion-icon name="image-outline"  slot="start"></ion-icon>
-              <ion-button class="subir2" color="barras" (click)="takePicture()">Seleccionar imagen</ion-button>
+<ion-button class="subir              2" color="barras" (click)="takePicture()">Seleccionar imagen</ion-button>
             </ion-item>
             <div *ngIf="formulario.get('nombre')?.invalid && formulario.get('nombre')?.touched">
               <ion-text color="danger" *ngIf="formulario.get('imagen')?.errors?.['required']">La imagen es obligatoria</ion-text>

@@ -46,7 +46,8 @@ export class InicioPage implements OnInit {
       nombre_plataforma : '',
       nombre_categoria : '',
       descripcion : '',
-      imagen : ''
+      imagen : '',
+      esta_desactivado : 0
 
     }]
 

@@ -1,0 +1,55 @@
+<ion-header >
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>Administrador</ion-title>
+    </div>
+   <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons> 
+     <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header> 
+
+<ion-content [fullscreen]="true">
+  <ion-grid *ngIf="arregloCompras.length > 0; else historialVacio">
+    <div class="menu-editar">
+      <h1 class="ion-text-center ion-padding">Compras realizadas</h1>
+    <ion-row>
+      <ion-col size="12" *ngFor="let x of arregloCompras">
+        <ion-card class="carta">
+          <ion-card-header>
+            <ion-card-title class="ion-text-center">Compra realizada por {{x.nombre_usuario}}</ion-card-title>
+            <h4 class="ion-text-center" style="color: black;">Fecha de compra : {{x.fecha}}</h4>
+            <h4 class="ion-text-center" style="color: black;">Cantidad de juegos comprados : {{x.cantidad_juegos}}</h4>
+            <h4 class="ion-text-center" style="color: black;">Total de la compra : {{x.total}}</h4>
+          </ion-card-header>
+          <div class="botones ion-margin">
+            <button mat-fab extended class="boton" (click)="irDetalle(x.id_compra)">
+              <mat-icon>description</mat-icon>
+              Ver detalle de compra
+            </button>
+            </div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </div> 
+  </ion-grid>
+
+
+  <ng-template #historialVacio>
+    <ion-card text-center class="lista-deseos">
+      <ion-card-header>
+        <h1 class="ion-text-center sombra subtitulos">No hay compras realizadas</h1>
+      </ion-card-header>
+    
+      <ion-card-content>
+       <p>No se han realizado compras en la aplicacion</p>
+      </ion-card-content>
+    </ion-card>
+    
+  </ng-template>
+ 
+</ion-content>

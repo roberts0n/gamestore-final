@@ -26,7 +26,7 @@ export class RegistroJuegoPage implements OnInit {
   constructor(private alerta : AlertserviceService,private formBuilder: FormBuilder,private toastController : ToastController,private router:Router,private alertcontroller: AlertController,private bd: BdserviceService) {
 
     this.formulario = this.formBuilder.group({
-      nombre: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.pattern(/\S+/)]],
       plataforma: ['', Validators.required],
       categoria: ['', Validators.required],
       descripcion: ['', [Validators.required, Validators.minLength(10)]],
@@ -34,7 +34,7 @@ export class RegistroJuegoPage implements OnInit {
       imagen: ['', [Validators.required]]
     });
     
-   }
+   }  
 
   ngOnInit() {
   }

@@ -54,6 +54,146 @@
       </button>
     </div>
   </mat-card>
+  
+  <br>
+  <br>
+  <br>
+
+  <h1 class="ion-text-center ion-padding">Reseñas de nuestros clientes</h1>
+
+
+    <ng-template #mostrarResena>
+      <div class="seccion-comentario" *ngIf="!modoEdicion; else formularioEdicion">
+        <div class="lista">
+          <div class="usuario">
+            <div class="imagen-usuario"><img src="{{resenaUsuario.imagen_usuario || '../../../assets/img/guest.jpg'}}" alt="" class="imagensita"></div>
+            <div class="info-usuario">
+              <div>Tu reseña</div>
+              <div *ngIf="resenaUsuario.puntuacion === 1">Recomiendas este juego</div>
+              <div *ngIf="resenaUsuario.puntuacion === 2">No recomiendas este juego</div>
+              <div class="fecha">{{resenaUsuario.fecha}}</div>
+            </div>
+          </div>
+          <div class="comentario-usuario">
+            {{ resenaUsuario.comentario }}
+          </div>
+
+          <div class="botones">
+          <button mat-fab extended class="botonEliminar" color="primary" (click)="eliminarResena()">
+            <mat-icon>delete</mat-icon>
+            Eliminar reseña 
+          </button>
+    
+          <button mat-fab extended class="botonEditar" (click)="activarModoEdicion()">
+            <mat-icon>edit</mat-icon>
+            Editar Reseña 
+          </button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+
+    <ng-template #formularioEdicion>
+      <div class="comentario">
+        <div class="usuario">
+          <div class="nombre-usuario">Editar</div>
+        </div>
+        <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+          <textarea formControlName="comentario" placeholder="Escribe tu reseña" type="text"></textarea>
+          <div *ngIf="formulario.get('comentario')?.invalid && formulario.get('comentario')?.touched">
+            <ion-text color="danger" *ngIf="formulario.get('comentario')?.errors?.['required']">
+              No puede dejar el campo vacío
+            </ion-text>
+          </div>
+    
+          <ion-item>
+            <ion-icon name="thumbs-up-outline" slot="start"></ion-icon>
+            <ion-select interface="popover" formControlName="opinion" placeholder="¿Recomiendas este juego?">
+              <ion-select-option value="1">Sí</ion-select-option>
+              <ion-select-option value="2">No</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <br>
+          <div class="botones">
+          <button mat-fab extended class="botonEditar"  type="submit">
+            <mat-icon>save</mat-icon>
+            Guardar cambios
+          </button>
+    
+          <button mat-fab extended class="botonEliminar" color="warn" (click)="modoEdicion = false">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </button>
+        </div>
+        </form>
+      </div>
+    </ng-template>
+
+
+  <div class="expositor-comentario">
+    
+
+    <div *ngIf="tieneJuego; else noCompra">
+    <div class="comentario" *ngIf="!tieneResena; else mostrarResena">
+      <div class="usuario">  
+        <!-- <div class="imagen-usuario"><img src="../../../assets/img/bg3.jpg" alt="" class="imagensita"></div> -->
+        <div class="nombre-usuario">Tu reseña</div>
+      </div>
+      <form  [formGroup]="formulario" (ngSubmit)="onSubmit()">
+        <textarea  formControlName="comentario"  placeholder="Escribe tu reseña" type="text" ></textarea>
+
+        <div *ngIf="formulario.get('comentario')?.invalid && formulario.get('comentario')?.touched">
+          <ion-text color="danger" *ngIf="formulario.get('comentario')?.errors?.['required']">No puede dejar el campo vacio</ion-text>
+        </div>
+
+        <ion-item>
+          <ion-icon name="thumbs-up-outline" slot="start"></ion-icon>
+          <ion-select interface="popover" formControlName="opinion" placeholder="Recomiendas este juego?">
+          <ion-select-option value="1">Si</ion-select-option>
+          <ion-select-option value="2">No</ion-select-option>
+        </ion-select>
+        </ion-item>
+        <br>
+        <button  style="margin-left: 10px;" mat-fab extended class="boton" type="submit">
+          <mat-icon>rate_review</mat-icon>
+          Publicar
+        </button>
+      </form>
+
+
+    </div>
+  </div>
+
+  <ng-template #noCompra>
+    <div class="mensaje">
+      <p>No puedes escribir una reseña porque aún no has comprado este juego.</p>
+    </div>
+  </ng-template> 
+
+
+    <br>
+    <br>
+
+    <div class="seccion-comentario">
+      <div class="lista"  *ngFor="let x of arregloResenas">
+        <div class="usuario">
+          <div class="imagen-usuario"><img  src="{{x.imagen_usuario || '../../../assets/img/guest.jpg'}}" alt="" class="imagensita"></div>
+          <div class="info-usuario">
+            <div class="nombre-usuario">{{x.nombre_usuario}}</div>
+            <div *ngIf="x.puntuacion === 1" class="">Recomienda este juego</div>
+            <div *ngIf="x.puntuacion === 2" class="">No Recomienda este juego</div>
+            <div class="fecha">{{x.fecha}}</div>
+
+          </div>
+        </div>
+        <div class="comentario-usuario">
+          {{x.resena}}
+        </div>
+      </div>
+    </div>
+
+  </div>
 
   
 </ion-content>

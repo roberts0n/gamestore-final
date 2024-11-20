@@ -25,15 +25,21 @@
         <ion-card class="carta">
           <ion-card-header>
             <ion-card-title class="ion-text-center">{{x.nombre_juego}}</ion-card-title>
+            <h4 *ngIf="x.esta_desactivado === 0 " class="ion-text-center" style="color: black;">Juego activado para la venta</h4>
+            <h4 *ngIf="x.esta_desactivado === 1 " class="ion-text-center" style="color: black;">Juego desactivado</h4>
           </ion-card-header>
           <div class="botones ion-margin">
             <button mat-fab extended class="boton" (click)="irEditar(x.id_juego)" >
               <mat-icon>edit</mat-icon>
               Editar
             </button>
-            <button  style="margin-left: 10px;" mat-fab extended class="boton2" color="primary" (click)="botonEliminar(x.id_juego)">
-              <mat-icon svgIcon="trash"></mat-icon>
-              Eliminar
+            <button *ngIf="x.esta_desactivado === 0 " style="margin-left: 10px;" mat-fab extended class="boton2" color="primary" (click)="botonDesactivar(x.id_juego)">
+              <mat-icon>lock</mat-icon>
+              Desactivar
+            </button>
+            <button *ngIf="x.esta_desactivado === 1 " style="margin-left: 10px;" mat-fab extended class="boton" color="primary" (click)="botonActivar(x.id_juego)">
+              <mat-icon>lock_open</mat-icon>
+              Activar
             </button>
             </div>
         </ion-card>

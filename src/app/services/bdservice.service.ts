@@ -7,6 +7,8 @@ import { Juego } from './juego';
 import emailjs from '@emailjs/browser';
 import { AlertserviceService } from './alertservice.service';
 import { Router } from '@angular/router';
+import { customAlphabet } from 'nanoid';
+import { DatePipe } from '@angular/common';
 /* import * as bcrypt from 'bcryptjs'; */
 
 
@@ -24,7 +26,7 @@ export class BdserviceService {
 
   tablaRol: string = "CREATE TABLE IF NOT EXISTS rol(id_rol INTEGER PRIMARY KEY AUTOINCREMENT,nombre TEXT NOT NULL);";
 
-  tablaJuego : string = "CREATE TABLE IF NOT EXISTS juego( id_juego INTEGER PRIMARY KEY AUTOINCREMENT, nombre_juego TEXT NOT NULL, precio INTEGER NOT NULL, id_plataforma INTEGER, id_categoria INTEGER, descripcion TEXT , imagen BLOB, FOREIGN KEY (id_plataforma) REFERENCES plataforma (id_plataforma), FOREIGN KEY (id_categoria) REFERENCES categoria (id_categoria));";
+  tablaJuego : string = "CREATE TABLE IF NOT EXISTS juego( id_juego INTEGER PRIMARY KEY AUTOINCREMENT, nombre_juego TEXT NOT NULL, precio INTEGER NOT NULL, id_plataforma INTEGER, id_categoria INTEGER, descripcion TEXT , imagen BLOB,esta_desactivado BOOLEAN DEFAULT FALSE,  FOREIGN KEY (id_plataforma) REFERENCES plataforma (id_plataforma), FOREIGN KEY (id_categoria) REFERENCES categoria (id_categoria));";
 
   /* tablaCarro : string = "CREATE TABLE IF NOT EXISTS carro( id_carro INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, id_juego INTEGER, fecha_agregado DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario), FOREIGN KEY (id_juego) REFERENCES juego (id_juego));"; */
   
@@ -32,13 +34,26 @@ export class BdserviceService {
 
   tablaCompra : string = "CREATE TABLE IF NOT EXISTS compra( id_compra INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, fecha_compra DATETIME DEFAULT CURRENT_TIMESTAMP, total INTEGER,id_estado NUMBER, FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario), FOREIGN KEY (id_estado) REFERENCES estado_compra(id_estado));";
 
-  tablaDetalleCompra : string = "CREATE TABLE IF NOT EXISTS detalle_compra ( id_detalle INTEGER PRIMARY KEY AUTOINCREMENT, id_compra INTEGER, id_juego INTEGER, subtotal INTEGER, FOREIGN KEY (id_compra) REFERENCES compra (id_compra), FOREIGN KEY (id_juego) REFERENCES juego (id_juego));";
+  tablaDetalleCompra : string = "CREATE TABLE IF NOT EXISTS detalle_compra ( id_detalle INTEGER PRIMARY KEY AUTOINCREMENT, id_compra INTEGER, id_juego INTEGER, subtotal INTEGER, clave TEXT, FOREIGN KEY (id_compra) REFERENCES compra (id_compra), FOREIGN KEY (id_juego) REFERENCES juego (id_juego));";
 
   tablaListaDeseados : string = "CREATE TABLE IF NOT EXISTS lista_deseados (id_lista INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, id_juego INTEGER, fecha_agregado DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario), FOREIGN KEY (id_juego) REFERENCES juego (id_juego));";
 
   tablaPlataforma : string = "CREATE TABLE IF NOT EXISTS plataforma (id_plataforma INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL);";
 
   tablaCategoria : string = "CREATE TABLE IF NOT EXISTS categoria(id_categoria INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL);";
+
+  tablaReseña : string = `CREATE TABLE IF NOT EXISTS reseña(
+    id_reseña INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_juego INTEGER,
+    id_usuario INTEGER,
+    reseña TEXT,
+    puntuación INTEGER,
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_juego) REFERENCES juego(id_juego),
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
+    UNIQUE(id_juego, id_usuario)  
+);
+`;
 
   //insert por default
 
@@ -57,6 +72,8 @@ export class BdserviceService {
   registroCategoriaRPG : string = "INSERT OR IGNORE INTO categoria(id_categoria,nombre) VALUES(2,'RPG');"
   registroCategoriaDeportes : string = "INSERT OR IGNORE INTO categoria(id_categoria,nombre) VALUES(3,'Deportes');"
   registroCategoriaAventura : string = "INSERT OR IGNORE INTO categoria(id_categoria,nombre) VALUES(4,'Aventura');"
+  insertAdmin : string = "INSERT OR IGNORE INTO usuario(nombre, email, password, id_rol) VALUES ('administrador','administrador@gmail.com','Qwerty123.',2)"
+  insertCliente : string = `INSERT INTO usuario(nombre, email, password, id_rol) VALUES ('cliente','cliente@gmail.com','Qwerty123.',1);`   
 
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private rolCambioSubject = new Subject<void>();
@@ -68,13 +85,25 @@ export class BdserviceService {
   private juegoBD = new BehaviorSubject<Juego | null>(null); 
   listaUsuarios = new BehaviorSubject([]);
   listaJuegos = new BehaviorSubject([]);
+  comprasGeneral = new BehaviorSubject([]);
+  historialDetalles = new BehaviorSubject([]);
+  listaJuegosAdmin = new BehaviorSubject([]);
+  reseñas = new BehaviorSubject([]);
+  reseñasGeneral = new BehaviorSubject([]);
+  miReseña = new BehaviorSubject([]);
   listaJuegosRandom = new BehaviorSubject([]);
   listaCategoria = new BehaviorSubject([]);
   listaPlataforma= new BehaviorSubject([]);
   listaCarro = new BehaviorSubject<any[]>([])
   listaCompras = new BehaviorSubject<any[]>([])
   listaDeseados = new BehaviorSubject<any[]>([])
-  totalCarro = new BehaviorSubject<number>(0); //se inicializa en 0 pero o se cambia o f
+  totalCarro = new BehaviorSubject<number>(0);
+   alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+   nanoid = customAlphabet(this.alphabet, 25);
+   
+   private reseñaUsuario = new BehaviorSubject<any>(null);
+  reseñaUsuario$ = this.reseñaUsuario.asObservable();// Longitud 25
+ //se inicializa en 0 pero o se cambia o f
 
 
 
@@ -92,6 +121,26 @@ export class BdserviceService {
 
   fetchCompras(): Observable<any[]>{
     return this.listaCompras.asObservable();
+  }
+
+  fetchReseñas(): Observable<any[]>{
+    return this.reseñas.asObservable();
+  }
+  fetchReseñasGeneral(): Observable<any[]>{
+    return this.reseñasGeneral.asObservable();
+  }
+
+  fetchMiReseña(): Observable<any[]>{
+    return this.miReseña.asObservable();
+  }
+
+
+  fetchComprasGeneral(): Observable<any[]>{
+    return this.comprasGeneral.asObservable();
+  }
+
+  fetchHistorialDetalles(): Observable<any[]>{
+    return this.historialDetalles.asObservable();
   }
 
   fetchDeseados():Observable<any[]>{
@@ -116,6 +165,10 @@ export class BdserviceService {
     return this.listaPlataforma.asObservable();
    }
 
+   fetchJuegosAdmin(): Observable<Juego[]>{
+    return this.listaJuegosAdmin.asObservable();
+   }
+
    fetchUsuario(): Observable<Usuario| null>{
     return this.usuarioBD.asObservable();
 
@@ -131,7 +184,7 @@ export class BdserviceService {
 
 
 
-   crearBD(){
+   /* crearBD(){
     this.platform.ready().then(()=>{
       
       this.sqlite.create({
@@ -153,7 +206,28 @@ export class BdserviceService {
         this.presentAlert('Crear DB','Error : '+ JSON.stringify(error));
       })
     })
-   }
+   } */
+
+
+    async crearBD() {
+      if (this.platform.is('hybrid')) { // Solo ejecuta si es un entorno nativo
+        try {
+          await this.platform.ready();
+          const bd = await this.sqlite.create({
+            name: 'bdgamestore.db',
+            location: 'default',
+          });
+          this.database = bd;
+          await this.crearTablas();
+          this.isDBReady.next(true);
+        } catch (error) {
+          this.presentAlert('Crear DB', 'Error : ' + JSON.stringify(error));
+        }
+      } else {
+        console.warn('El plugin de SQLite no está disponible en el entorno web.');
+        this.isDBReady.next(false);
+      }
+    }
    
 
 
@@ -171,6 +245,7 @@ export class BdserviceService {
       await this.database.executeSql(this.tablaCompra, []);
       await this.database.executeSql(this.tablaDetalleCompra, []);
       await this.database.executeSql(this.tablaListaDeseados, []);
+      await this.database.executeSql(this.tablaReseña, []);
 
       //INSERT por default aqui
       await this.database.executeSql(this.registroRolCliente,[]);
@@ -188,6 +263,7 @@ export class BdserviceService {
       await this.database.executeSql(this.registroCategoriaRPG,[]);
       await this.database.executeSql(this.registroCategoriaDeportes,[]);
       await this.database.executeSql(this.registroCategoriaAventura,[]);
+      await this.database.executeSql(this.insertAdmin,[]);
 
 
     }catch(error){
@@ -254,13 +330,14 @@ export class BdserviceService {
       const res = await this.database.executeSql("SELECT esta_bloqueado FROM usuario WHERE id_usuario = ?", [id_usuario]);
   
       if (res.rows.length > 0) {
-        if (res.rows.item(0).esta_bloqueado === 'true') {
+        if (res.rows.item(0).esta_bloqueado === 1) {
           this.alerta.presentToast('Este usuario ya está bloqueado!');
           return;
         }
 
-        await this.database.executeSql("UPDATE usuario SET esta_bloqueado = ? WHERE id_usuario = ?", [true, id_usuario]);
+        await this.database.executeSql("UPDATE usuario SET esta_bloqueado = ? WHERE id_usuario = ?", [1, id_usuario]);
         this.alerta.presentToast('Usuario bloqueado con éxito!');
+        this.adminUsuarios();
 
         const usuario = Number(localStorage.getItem('usuarioId'));
 
@@ -278,22 +355,72 @@ export class BdserviceService {
     }
   }
 
+
+
   async desbloquearUsuario(id_usuario: number) {
     try {
       const res = await this.database.executeSql("SELECT esta_bloqueado FROM usuario WHERE id_usuario = ?", [id_usuario]);
   
       if (res.rows.length > 0) {
-        if (res.rows.item(0).esta_bloqueado === 'false') {
+        if (res.rows.item(0).esta_bloqueado === 0) {
           this.alerta.presentToast('No puedes desbloquear un usuario que no está bloqueado!');
           return;
         }
-        await this.database.executeSql("UPDATE usuario SET esta_bloqueado = ? WHERE id_usuario = ?", [false, id_usuario]);
+        await this.database.executeSql("UPDATE usuario SET esta_bloqueado = ? WHERE id_usuario = ?", [0, id_usuario]);
         this.alerta.presentToast('Usuario desbloqueado con éxito!');
+        this.adminUsuarios();
       } else {
         this.alerta.presentToast('Usuario no encontrado.');
       }
     } catch (error) {
       console.error('Error al desbloquear el usuario:', error);
+      this.alerta.presentAlert('error al desbloquear',': '+JSON.stringify(error))
+    }
+  }
+
+  async activarJuego(id_juego : number){
+    try{
+      const res = await this.database.executeSql("SELECT esta_desactivado FROM juego WHERE id_juego = ?",[id_juego]);
+
+      if (res.rows.length> 0){
+        if(res.rows.item(0).esta_desactivado === 0){
+          this.alerta.presentToast('Este juego ya esta activado!');
+          return;
+        }
+        await this.database.executeSql("UPDATE juego SET esta_desactivado = ? WHERE id_juego = ?",[0,id_juego]);
+        this.alerta.presentToast('Juego activado con exito!');
+        this.getJuegosAdmin();
+        this.getJuegosRandom();
+      }else{
+        this.alerta.presentToast('Juego no encontrado.');
+      }
+    }catch (error) {
+      console.error('Error al activar el juego:', error);
+      this.alerta.presentAlert('error al activar',': '+JSON.stringify(error))
+      this.alerta.presentToast('Ocurrió un error al intentar activar el juego');
+    }
+
+  }
+
+
+  async desactivarJuego(id_juego : number){
+    try{
+      const res = await this.database.executeSql("SELECT esta_desactivado FROM juego WHERE id_juego = ?",[id_juego]);
+
+      if(res.rows.length > 0){
+        if(res.rows.item(0).esta_desactivado === 1){
+          this.alerta.presentToast('No puedes desactivar un juego que ya esta desactivado!');
+          return;
+        }
+        await this.database.executeSql("UPDATE juego SET esta_desactivado = ? WHERE id_juego = ?",[1, id_juego]);
+        this.alerta.presentToast('Juego desactivado con exito!');
+        this.getJuegosAdmin();
+        this.getJuegosRandom();
+      }else{
+        this.alerta.presentToast('Juego no encontrado');
+      }
+    } catch(error){
+      console.log('Error al desbloquear juego',error);
       this.alerta.presentAlert('error al desbloquear',': '+JSON.stringify(error))
     }
   }
@@ -308,7 +435,7 @@ export class BdserviceService {
             return;
           }
 
-          if(res.rows.item(0).esta_bloqueado === 'true'){
+          if(res.rows.item(0).esta_bloqueado === 1){
             this.alerta.presentToast('No puedes volver administrador a un usuario bloqueado!');
             return;
           }
@@ -335,7 +462,7 @@ export class BdserviceService {
             return;
           }
 
-          if(res.rows.item(0).esta_bloqueado === 'true'){
+          if(res.rows.item(0).esta_bloqueado === 1){
             this.alerta.presentToast('Este usuario esta bloqueado! No puedes hacer esto.');
             return;
           }
@@ -369,7 +496,7 @@ export class BdserviceService {
   
         console.log('Estado de bloqueo del usuario:', user.esta_bloqueado); // Mensaje de depuración
   
-        if (user.esta_bloqueado === 'true') {
+        if (user.esta_bloqueado === 1) {
           this.alerta.presentToast('Este usuario está bloqueado. No puedes iniciar sesión.');
           return false;
       }
@@ -495,7 +622,8 @@ async adminUsuarios(){
           idUsuario : res.rows.item(i).id_usuario,
           email : res.rows.item(i).email,
           nombre : res.rows.item(i).nombre,
-          id_rol : res.rows.item(i).id_rol
+          id_rol : res.rows.item(i).id_rol,
+          esta_bloqueado : res.rows.item(i).esta_bloqueado
         })
       }
     }
@@ -668,7 +796,7 @@ async adminUsuarios(){
 
 
 
-  getJuegos(){
+  getJuegosAdmin(){
     return this.database.executeSql('SELECT juego.*, plataforma.nombre as nombre_plataforma, categoria.nombre as nombre_categoria FROM juego JOIN plataforma on juego.id_plataforma = plataforma.id_plataforma JOIN categoria on juego.id_categoria = categoria.id_categoria;',[]).then(res=>{
 
       let items : Juego[] = [];
@@ -682,7 +810,557 @@ async adminUsuarios(){
             nombre_plataforma : res.rows.item(i).nombre_plataforma,
             nombre_categoria : res.rows.item(i).nombre_categoria,
             descripcion : res.rows.item(i).descripcion,
-            imagen : res.rows.item(i).imagen
+            imagen : res.rows.item(i).imagen,
+            esta_desactivado : res.rows.item(i).esta_desactivado
+          })
+        }
+      }
+      this.listaJuegosAdmin.next(items as any);
+
+    }).catch((error=>{
+      this.presentAlert('get juegos','error en la bd :'+JSON.stringify(error))
+    }))
+
+  }
+
+  async getHistorialDetallesByCompra(id_compra : number){
+    try{
+      const res = await this.database.executeSql(`
+        SELECT 
+        c.id_compra,
+        c.fecha_compra AS fecha,
+        u.nombre AS nombre_usuario,
+        u.email AS correo_usuario,
+        c.total,
+        dc.id_detalle,
+        dc.subtotal,
+        j.id_juego,
+        j.nombre_juego,
+        j.precio,
+        j.descripcion,
+        j.imagen,
+        plataforma.nombre as nombre_plataforma
+        FROM
+        compra c
+        JOIN 
+        usuario u ON c.id_usuario = u.id_usuario
+        JOIN
+        detalle_compra dc ON c.id_compra = dc.id_compra
+        JOIN
+        juego j ON dc.id_juego = j.id_juego
+        JOIN 
+        plataforma on j.id_plataforma = plataforma.id_plataforma
+        WHERE
+        c.id_compra = ?;`,[id_compra]);
+
+        const detalle = [];
+
+        if(res.rows.length>0){
+          for(let i = 0; i< res.rows.length; i++){
+
+            /* const fechaFormateada = this.datePipe.transform(res.rows.item(i).fecha, 'd MMMM yyyy'); */
+            const fechaObj = new Date(res.rows.item(i).fecha);
+            const fechaFormateada = fechaObj.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+           detalle.push({
+             id_compra : res.rows.item(i).id_compra,
+             nombre_usuario : res.rows.item(i).nombre_usuario,
+             correo_usuario : res.rows.item(i).correo_usuario,
+             total : res.rows.item(i).total,
+             id_juego : res.rows.item(i).id_juego,
+             fecha : fechaFormateada,
+             imagen : res.rows.item(i).imagen,
+             precio : res.rows.item(i).precio,
+             nombre_juego : res.rows.item(i).nombre_juego,
+             nombre_plataforma : res.rows.item(i).nombre_plataforma
+           })
+         }
+        }
+        this.historialDetalles.next(detalle as any);
+
+    }catch(error){
+      this.alerta.presentAlert('Error al get hist detalle ',': '+JSON.stringify(error))
+    }
+  }
+
+
+
+
+
+    /* async verificarReseña(id_usuario: number, id_juego: number) {
+
+
+      try {
+        const res = await this.database.executeSql(`
+          SELECT r.reseña, r.puntuación ,r.fecha
+          FROM reseña r
+          JOIN detalle_compra dc ON r.id_juego = dc.id_juego
+          JOIN compra c ON dc.id_compra = c.id_compra
+          WHERE r.id_usuario = ? AND r.id_juego = ?
+          AND c.id_usuario = ? AND c.id_estado = 2;
+        `, [id_usuario, id_juego,id_usuario]);
+    
+
+        if (res.rows.length > 0) {
+          const fechaObj = new Date(res.rows.item(0).fecha);
+          const fechaFormateada = fechaObj.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+          return {
+            comentario: res.rows.item(0).reseña,
+            puntuacion: res.rows.item(0).puntuación,
+            imagen_usuario: res.rows.item(0).imagen,
+            fecha: res.rows.item(0).fecha
+          };
+
+          
+        }
+
+        return null;
+      } catch (error) {
+        this.alerta.presentAlert('Error al verificar reseña', JSON.stringify(error));
+        return null;
+      }
+    } */
+
+
+      async verificarReseña(id_usuario: number, id_juego: number) {
+        try {
+          const res = await this.database.executeSql(`
+            SELECT r.reseña, r.puntuación, u.imagen, r.fecha
+            FROM reseña r
+            JOIN usuario u ON r.id_usuario = u.id_usuario
+            JOIN detalle_compra dc ON r.id_juego = dc.id_juego
+            JOIN compra c ON dc.id_compra = c.id_compra
+            WHERE r.id_usuario = ? AND r.id_juego = ?
+            AND c.id_usuario = ? AND c.id_estado = 2;
+          `, [id_usuario, id_juego, id_usuario]);
+          
+          if (res.rows.length > 0) {
+            const fechaObj = new Date(res.rows.item(0).fecha);
+            const fechaFormateada = fechaObj.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    
+            const reseña = {
+              comentario: res.rows.item(0).reseña,
+              puntuacion: res.rows.item(0).puntuación,
+              imagen_usuario: res.rows.item(0).imagen,
+              fecha: fechaFormateada
+            };
+    
+            // Emitimos la reseña encontrada
+            this.reseñaUsuario.next(reseña);
+    
+          } else {
+            // Si no hay reseña, emitimos null
+            this.reseñaUsuario.next(null);
+          }
+        } catch (error) {
+          this.alerta.presentAlert('Error al verificar reseña', JSON.stringify(error));
+          this.reseñaUsuario.next(null);
+        }
+      }
+
+  async verificarCompra(id_usuario: number, id_juego: number): Promise<boolean> {
+    try {
+      const res = await this.database.executeSql(
+        `SELECT * 
+         FROM detalle_compra dc
+         JOIN compra c ON dc.id_compra = c.id_compra
+         WHERE dc.id_juego = ? AND c.id_usuario = ? AND c.id_estado = 2`,
+        [id_juego, id_usuario]
+      );
+  
+      // Si encuentra registros, significa que el usuario ha comprado el juego
+      return res.rows.length > 0;
+    } catch (error) {
+      this.alerta.presentAlert('Error al verificar compra', JSON.stringify(error));
+      return false;
+    }
+  }
+
+/*   this.getReseñasJuego(id_juego,id_usuario);
+              this.verificarReseña(id_juego,id_usuario);
+ */
+
+  /* async insertReseña(id_usuario : number,id_juego : number,comentario : string, puntuacion : number){
+    try{
+      const resComprado = await this.database.executeSql(
+        `SELECT COUNT(*) AS conteo, u.imagen FROM detalle_compra dc 
+         JOIN compra c ON dc.id_compra = c.id_compra
+         JOIN usuario u ON u.id_usuario = c.id_usuario
+         WHERE c.id_usuario = ? AND dc.id_juego = ? AND c.id_estado = 2`,
+        [id_usuario, id_juego]
+      );
+
+        if((resComprado.rows.item(0).conteo > 0)){
+          const imagenUsuario = resComprado.rows.item(0).imagen;
+
+          await this.database.executeSql(`
+            INSERT INTO reseña (id_juego,id_usuario, reseña, puntuación)
+            VALUES (?,?,?,?)`,[id_juego,id_usuario,comentario,puntuacion])
+            .then(()=>{
+              this.alerta.presentToast('Reseña publicada con exito!')
+            })
+            .catch((error)=>{
+              this.alerta.presentAlert('error al insert reseña ',': '+JSON.stringify(error));
+            })
+        }
+    }catch(error){
+      this.alerta.presentAlert('error al try si se compro',': '+JSON.stringify(error));
+    }
+  }
+ */
+
+
+
+  async insertReseña(id_usuario: number, id_juego: number, comentario: string, puntuacion: number) {
+    try {
+      // Verificamos si el usuario ha comprado el juego y obtenemos su imagen
+      const resComprado = await this.database.executeSql(
+        `SELECT COUNT(*) AS conteo, u.imagen FROM detalle_compra dc 
+         JOIN compra c ON dc.id_compra = c.id_compra
+         JOIN usuario u ON u.id_usuario = c.id_usuario
+         WHERE c.id_usuario = ? AND dc.id_juego = ? AND c.id_estado = 2`,
+        [id_usuario, id_juego]
+      );
+  
+      if (resComprado.rows.item(0).conteo > 0) {
+        // Obtenemos la imagen del usuario
+        const imagenUsuario = resComprado.rows.item(0).imagen;
+  
+        // Insertamos la reseña
+        await this.database.executeSql(
+          `INSERT INTO reseña (id_juego, id_usuario, reseña, puntuación)
+           VALUES (?, ?, ?, ?)`,
+          [id_juego, id_usuario, comentario, puntuacion]
+        );
+  
+        this.alerta.presentToast('Reseña publicada con éxito!');
+  
+        // Emitimos la nueva reseña con la imagen del usuario
+        const nuevaFecha = new Date();
+        const fechaFormateada = nuevaFecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+  
+        const nuevaReseña = {
+          comentario: comentario,
+          puntuacion: puntuacion,
+          fecha: fechaFormateada,
+          imagen_usuario: imagenUsuario
+        };
+  
+        // Actualizamos el observable
+        this.reseñaUsuario.next(nuevaReseña);
+      } else {
+        this.alerta.presentAlert('Error', 'No se ha encontrado una compra válida para este juego.');
+      }
+    } catch (error) {
+      this.alerta.presentAlert('Error al publicar reseña', JSON.stringify(error));
+    }
+  }
+
+
+  async EliminarReseña(id_usuario : number,id_juego : number){
+    try{
+
+       await this.database.executeSql(`
+        DELETE FROM reseña
+        WHERE id_usuario = ? AND id_juego = ? `,[id_usuario,id_juego]);
+
+       this.alerta.presentToast('Reseña eliminada con exito!');
+       this.reseñaUsuario.next(null);
+
+    }catch(error){
+      this.alerta.presentAlert('error al eliminar reseña',': '+JSON.stringify(error));
+    }
+  }
+
+
+  async EliminarReseñaGeneral(id_usuario : number,id_juego : number){
+    try{
+
+       await this.database.executeSql(`
+        DELETE FROM reseña
+        WHERE id_usuario = ? AND id_juego = ? `,[id_usuario,id_juego]);
+
+       this.alerta.presentToast('Reseña eliminada con exito!');
+       this.getReseñasGeneral();
+
+
+       const idActual = Number(localStorage.getItem('usuarioId'));
+       if(id_usuario ===idActual){
+        this.verificarReseña(id_usuario,id_juego)
+       }
+
+    }catch(error){
+      this.alerta.presentAlert('error al eliminar reseña',': '+JSON.stringify(error));
+    }
+  }
+
+
+  /* async editarReseña(id_usuario : number,id_juego : number,comentario : string, puntuacion : number){
+      let query = "UPDATE reseña SET";
+      const params : any[] = [];
+
+      if (comentario){
+        query += ' reseña = ?';
+        params.push(comentario);
+      }
+
+      if(puntuacion){
+        query += params.length ? ', puntuación = ?' : 'puntuación = ?';
+        params.push(puntuacion);
+      }
+      
+    
+      if(params.length >0){
+        query +='WHERE id_usuario = ? AND id_juego = ?';
+        params.push(id_usuario,id_juego);
+
+        this.database.executeSql(query,params)
+        .then(()=>{
+          this.alerta.presentToast('Reseña editada con exito!');
+          this.verificarReseña(id_usuario,id_juego);
+
+        }).catch(error=>{
+          this.alerta.presentAlert('fallo al editar reseña',': '+JSON.stringify(error));
+        })
+      }else{
+        this.alerta.presentToast('No has proporcionado nada para editar!');
+      }
+  }
+ */
+
+
+  async editarReseña(id_usuario: number, id_juego: number, comentario: string, puntuacion: number) {
+    let query = "UPDATE reseña SET";
+    const params: any[] = [];
+  
+    if (comentario) {
+      query += ' reseña = ?';
+      params.push(comentario);
+    }
+  
+    if (puntuacion) {
+      query += params.length ? ', puntuación = ?' : 'puntuación = ?';
+      params.push(puntuacion);
+    }
+  
+    if (params.length > 0) {
+      query += ' WHERE id_usuario = ? AND id_juego = ?';
+      params.push(id_usuario, id_juego);
+  
+      try {
+        await this.database.executeSql(query, params);
+        this.alerta.presentToast('Reseña editada con éxito!');
+        this.verificarReseña(id_usuario, id_juego);  // Revisa la reseña después de editar
+  
+        // Emite la nueva reseña después de la edición
+        const updatedReseña = {
+          comentario: comentario,
+          puntuacion: puntuacion,
+          fecha: new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })// Asume que se actualiza la imagen del usuario en la reseña si es necesario
+        };
+  
+        // Emitimos la reseña editada al BehaviorSubject
+        this.reseñaUsuario.next(updatedReseña);
+  
+      } catch (error) {
+        this.alerta.presentAlert('Fallo al editar reseña', ': ' + JSON.stringify(error));
+        this.reseñaUsuario.next(null);  // En caso de error, emitimos null
+      }
+    } else {
+      this.alerta.presentToast('No has proporcionado nada para editar!');
+      this.reseñaUsuario.next(null);  // Si no se proporcionaron cambios, emitimos null
+    }
+  }
+
+  async getReseñasJuego(id_juego: number, id_usuario: number) {
+    try {
+      const res = await this.database.executeSql(`
+        SELECT r.reseña, r.puntuación, u.nombre, u.imagen , r.fecha
+        FROM reseña r
+        JOIN usuario u ON r.id_usuario = u.id_usuario
+        WHERE r.id_juego = ? AND r.id_usuario != ?
+        ORDER BY r.fecha DESC
+      `, [id_juego, id_usuario]);
+  
+      const listaReseñas = [];
+      if(res.rows.length>0){
+        for (let i = 0; i < res.rows.length; i++) {
+          const fechaObj = new Date(res.rows.item(i).fecha);
+          const fechaFormateada = fechaObj.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+          listaReseñas.push({
+                resena : res.rows.item(i).reseña,
+                puntuacion : res.rows.item(i).puntuación,
+                fecha : fechaFormateada,
+                nombre_usuario : res.rows.item(i).nombre,
+                imagen_usuario: res.rows.item(i).imagen
+              })
+        }
+      }
+      this.reseñas.next(listaReseñas as any);
+  
+      return listaReseñas;
+    } catch (error) {
+      this.alerta.presentAlert('Error al obtener reseñas', JSON.stringify(error));
+      return [];
+    }
+  }
+
+
+
+
+   async getReseñasGeneral(){
+    try{
+      const res = await this.database.executeSql(`
+        SELECT r.reseña, r.puntuación, u.nombre, u.imagen,u.id_usuario , r.fecha,j.nombre_juego,j.id_juego
+        FROM reseña r
+        JOIN usuario u ON r.id_usuario = u.id_usuario
+        JOIN juego j ON j.id_juego = r.id_juego
+        ORDER BY r.fecha DESC`,[]);
+        const listaReseñasGeneral = [];
+
+        if(res.rows.length>0){
+          for(let i = 0; i< res.rows.length; i++){
+
+             /* const fechaFormateada = this.datePipe.transform(res.rows.item(i).fecha, 'd MMMM yyyy'); */
+             const fechaObj = new Date(res.rows.item(i).fecha);
+             const fechaFormateada = fechaObj.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+            listaReseñasGeneral.push({
+              resena : res.rows.item(i).reseña,
+              puntuacion : res.rows.item(i).puntuación,
+              fecha : fechaFormateada,
+              nombre_usuario : res.rows.item(i).nombre,
+              imagen_usuario: res.rows.item(i).imagen,
+              nombre_juego: res.rows.item(i).nombre_juego,
+              id_juego: res.rows.item(i).id_juego,
+              id_usuario: res.rows.item(i).id_usuario,
+            })
+          }
+        }
+        this.reseñasGeneral.next(listaReseñasGeneral as any);
+    }catch (error) {
+      this.alerta.presentAlert('Error al obtener reseñas', JSON.stringify(error));
+    }
+   }
+
+
+
+   async getComprasGeneral(){
+    try{
+      const res = await this.database.executeSql(`
+            SELECT 
+        c.id_compra, 
+        c.fecha_compra AS fecha, 
+        u.nombre AS nombre_usuario, 
+        u.email AS correo_usuario,
+        COUNT(dc.id_juego) AS cantidad_juegos, 
+        c.total, 
+        ec.nombre_estado AS estado_compra
+    FROM 
+        compra c
+    JOIN 
+        usuario u ON c.id_usuario = u.id_usuario
+    JOIN 
+        estado_compra ec ON c.id_estado = ec.id_estado
+    JOIN 
+        detalle_compra dc ON c.id_compra = dc.id_compra
+    WHERE 
+        c.id_estado = 2
+    GROUP BY 
+        c.id_compra, u.nombre, u.email, c.total, ec.nombre_estado
+    ORDER BY 
+        c.fecha_compra DESC;`,[]);
+        const compras = [];
+
+        if(res.rows.length>0){
+          for(let i = 0; i< res.rows.length; i++){
+
+             /* const fechaFormateada = this.datePipe.transform(res.rows.item(i).fecha, 'd MMMM yyyy'); */
+             const fechaObj = new Date(res.rows.item(i).fecha);
+             const fechaFormateada = fechaObj.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+            compras.push({
+              id_compra : res.rows.item(i).id_compra,
+              nombre_usuario : res.rows.item(i).nombre_usuario,
+              correo_usuario : res.rows.item(i).correo_usuario,
+              cantidad_juegos : res.rows.item(i).cantidad_juegos,
+              total : res.rows.item(i).total,
+              fecha : fechaFormateada
+            })
+          }
+        }
+        this.comprasGeneral.next(compras as any);
+
+    }catch(error){
+      this.alerta.presentAlert('error al traer hist compras',': '+JSON.stringify(error));
+    }
+  } 
+
+   /*  async getComprasGeneral() {
+      try {
+        const query = `
+          SELECT 
+            c.id_compra, 
+            c.fecha_compra AS fecha, 
+            u.nombre AS nombre_usuario, 
+            u.email AS correo_usuario, 
+            COUNT(dc.id_juego) AS cantidad_juegos, 
+            c.total, 
+            ec.nombre_estado AS estado_compra
+          FROM 
+            compra c
+          JOIN 
+            usuario u ON c.id_usuario = u.id_usuario
+          JOIN 
+            estado_compra ec ON c.id_estado = ec.id_estado
+          JOIN 
+            detalle_compra dc ON c.id_compra = dc.id_compra
+          GROUP BY 
+            c.id_compra, u.nombre, u.email, c.total, ec.nombre_estado, c.fecha_compra
+          ORDER BY 
+            c.fecha_compra DESC;
+        `;
+    
+        const res = await this.database.executeSql(query, []);
+        
+        console.log("Resultado de la consulta:", res); // Log para revisar los resultados
+        
+        const compras = [];
+    
+        if (res.rows.length > 0) {
+          for (let i = 0; i < res.rows.length; i++) {
+            const row = res.rows.item(i);
+            compras.push({
+              id_compra: row.id_compra,
+              nombre_usuario: row.nombre_usuario,
+              correo_usuario: row.correo_usuario,
+              cantidad_juegos: row.cantidad_juegos,
+              total: row.total,
+              fecha: row.fecha, // Asegúrate de que "fecha" tiene datos
+              estado_compra: row.estado_compra
+            });
+          }
+        }
+    
+        this.comprasGeneral.next(compras as any);
+      } catch (error) {
+        this.alerta.presentAlert('Error al traer historial de compras', `Detalle: `+JSON.stringify(error));
+      }
+    }   */
+
+  getJuegos(){
+    return this.database.executeSql('SELECT juego.*, plataforma.nombre as nombre_plataforma, categoria.nombre as nombre_categoria FROM juego JOIN plataforma on juego.id_plataforma = plataforma.id_plataforma JOIN categoria on juego.id_categoria = categoria.id_categoria WHERE esta_desactivado = 0;',[]).then(res=>{
+
+      let items : Juego[] = [];
+
+      if(res.rows.length>0){
+        for(var i = 0; i < res.rows.length; i++){
+          items.push({
+            id_juego : res.rows.item(i).id_juego,
+            nombre_juego : res.rows.item(i).nombre_juego,
+            precio : res.rows.item(i).precio,
+            nombre_plataforma : res.rows.item(i).nombre_plataforma,
+            nombre_categoria : res.rows.item(i).nombre_categoria,
+            descripcion : res.rows.item(i).descripcion,
+            imagen : res.rows.item(i).imagen,
+            esta_desactivado : res.rows.item(i).esta_desactivado
           })
         }
       }
@@ -695,7 +1373,7 @@ async adminUsuarios(){
   }
 
   getJuegosRandom(){
-    return this.database.executeSql('SELECT juego.*, plataforma.nombre as nombre_plataforma, categoria.nombre as nombre_categoria FROM juego JOIN plataforma on juego.id_plataforma = plataforma.id_plataforma JOIN categoria on juego.id_categoria = categoria.id_categoria  ORDER BY RANDOM() LIMIT 3;',[]).then(res=>{
+    return this.database.executeSql('SELECT juego.*, plataforma.nombre as nombre_plataforma, categoria.nombre as nombre_categoria FROM juego JOIN plataforma on juego.id_plataforma = plataforma.id_plataforma JOIN categoria on juego.id_categoria = categoria.id_categoria WHERE esta_desactivado = 0  ORDER BY RANDOM() LIMIT 3;',[]).then(res=>{
 
       let items : Juego[] = [];
 
@@ -746,7 +1424,7 @@ async adminUsuarios(){
   }
 
   getJuegoByPlataforma(id : number){
-    return this.database.executeSql('SELECT juego.*, plataforma.nombre as nombre_plataforma, categoria.nombre as nombre_categoria FROM juego JOIN plataforma on juego.id_plataforma = plataforma.id_plataforma JOIN categoria on juego.id_categoria = categoria.id_categoria WHERE juego.id_plataforma = ?',[id]).then((res)=>{
+    return this.database.executeSql('SELECT juego.*, plataforma.nombre as nombre_plataforma, categoria.nombre as nombre_categoria FROM juego JOIN plataforma on juego.id_plataforma = plataforma.id_plataforma JOIN categoria on juego.id_categoria = categoria.id_categoria WHERE juego.id_plataforma = ? AND esta_desactivado = 0',[id]).then((res)=>{
 
       let items : Juego[] = [];
 
@@ -768,7 +1446,7 @@ async adminUsuarios(){
   }
 
   getJuegoByCategoria(id : number){
-    return this.database.executeSql('SELECT juego.*, plataforma.nombre as nombre_plataforma, categoria.nombre as nombre_categoria FROM juego JOIN plataforma on juego.id_plataforma = plataforma.id_plataforma JOIN categoria on juego.id_categoria = categoria.id_categoria WHERE juego.id_categoria = ?',[id]).then((res)=>{
+    return this.database.executeSql('SELECT juego.*, plataforma.nombre as nombre_plataforma, categoria.nombre as nombre_categoria FROM juego JOIN plataforma on juego.id_plataforma = plataforma.id_plataforma JOIN categoria on juego.id_categoria = categoria.id_categoria WHERE juego.id_categoria = ? AND esta_desactivado = 0',[id]).then((res)=>{
 
       let items : Juego[] = [];
 
@@ -940,7 +1618,13 @@ async adminUsuarios(){
 
   }
 
-  comprarJuegos(id_usuario : number){
+  generateRandomKey(): string {
+    const rawKey = this.nanoid(); // Genera algo como 'ABCDEFGHIJKLMNOPQRSTUVWX'
+    // Separar en grupos de 5 caracteres
+    return rawKey.match(/.{1,5}/g)?.join('-') || '';
+  }
+
+ /*  comprarJuegos(id_usuario : number){
 
     this.database.executeSql("SELECT id_compra FROM compra WHERE id_usuario = ? AND id_estado = 1;",[id_usuario])
     .then((res)=>{
@@ -949,8 +1633,18 @@ async adminUsuarios(){
 
         this.database.executeSql("DELETE FROM lista_deseados WHERE id_juego IN(SELECT id_juego FROM detalle_compra WHERE id_compra = ?) AND id_usuario = ?",[id_compra, id_usuario])
         .then(()=>{
+
           this.database.executeSql("UPDATE compra SET id_estado = 2 WHERE id_compra = ? ",[id_compra])
           .then((res)=>{
+
+            this.database.executeSql("SELECT id_juego FROM detalle_compra WHERE id_compra = ?",[id_compra])
+            .then((detalleRes)=>{
+              for (let i = 0; i < detalleRes.rows.length; i++){
+                const id_juego = detalleRes.rows.item(i).id_juego;
+                const clave_juego = this.generateRandomKey();
+              }
+            })
+
             this.alerta.presentAlert('Compra realizada','Has comprado tus juegos con exito!')
             
             this.getDeseados(id_usuario)
@@ -967,11 +1661,65 @@ async adminUsuarios(){
     })
 
   }
+ */
+
+  comprarJuegos(id_usuario: number) {
+    this.database.executeSql("SELECT id_compra FROM compra WHERE id_usuario = ? AND id_estado = 1;", [id_usuario])
+      .then((res) => {
+        if (res.rows.length > 0) {
+          const id_compra = res.rows.item(0).id_compra;
+  
+        
+          this.database.executeSql("DELETE FROM lista_deseados WHERE id_juego IN(SELECT id_juego FROM detalle_compra WHERE id_compra = ?) AND id_usuario = ?", [id_compra, id_usuario])
+            .then(() => {
+  
+         
+              this.database.executeSql("UPDATE compra SET id_estado = 2, fecha_compra = datetime('now', 'localtime') WHERE id_compra = ?", [id_compra])
+                .then(() => {                 
+                  this.database.executeSql("SELECT id_juego FROM detalle_compra WHERE id_compra = ?", [id_compra])
+                    .then((detalleRes) => {
+                      for (let i = 0; i < detalleRes.rows.length; i++) {
+                        const id_juego = detalleRes.rows.item(i).id_juego;
+                        const key_juego = this.generateRandomKey(); 
+                        this.database.executeSql("UPDATE detalle_compra SET clave = ? WHERE id_compra = ? AND id_juego = ?", [key_juego, id_compra, id_juego])
+                          .then(() => {
+                            if (i === detalleRes.rows.length - 1) {
+                              this.alerta.presentAlert('Compra realizada', 'Has comprado tus juegos con éxito!');
+                              this.getDeseados(id_usuario);
+                              this.listaCarro.next([]);
+                            }
+                          })
+                          .catch((error) => {
+                            this.presentAlert('Error al actualizar key', JSON.stringify(error));
+                          });
+                      }
+                    })
+                    .catch((error) => {
+                      this.presentAlert('Error al obtener detalles de compra', JSON.stringify(error));
+                    });
+                })
+                .catch((error) => {
+                  this.presentAlert('Error al actualizar estado de compra', JSON.stringify(error));
+                });
+  
+            })
+            .catch((error) => {
+              this.presentAlert('Error al eliminar juegos del carro', JSON.stringify(error));
+            });
+        } else {
+          this.presentAlert('Carro vacío', 'No hay nada que comprar');
+        }
+      })
+      .catch((error) => {
+        this.presentAlert('Error en la DB compra', ': ' + JSON.stringify(error));
+      });
+  }
+  
 
   async getJuegosComprados(id_usuario: number) {
     try {
       const res = await this.database.executeSql(
-        `SELECT juego.*, plataforma.nombre AS nombre_plataforma, categoria.nombre AS nombre_categoria, detalle_compra.subtotal
+        `SELECT juego.*, plataforma.nombre AS nombre_plataforma, categoria.nombre AS nombre_categoria, detalle_compra.subtotal, detalle_compra.clave
          FROM juego
          JOIN plataforma ON juego.id_plataforma = plataforma.id_plataforma
          JOIN categoria ON juego.id_categoria = categoria.id_categoria
@@ -980,7 +1728,8 @@ async adminUsuarios(){
          WHERE compra.id_usuario = ? AND compra.id_estado = 2;`,
         [id_usuario]
       );
-  
+
+      
       let items = Array.from({ length: res.rows.length }, (_, i) => ({
         id_juego: res.rows.item(i).id_juego,
         nombre_juego: res.rows.item(i).nombre_juego,
@@ -989,7 +1738,8 @@ async adminUsuarios(){
         nombre_categoria: res.rows.item(i).nombre_categoria,
         subtotal: res.rows.item(i).subtotal,
         descripcion: res.rows.item(i).descripcion,
-        imagen: res.rows.item(i).imagen
+        imagen: res.rows.item(i).imagen,
+        clave: res.rows.item(i).clave
       }));
   
       this.listaCompras.next(items);

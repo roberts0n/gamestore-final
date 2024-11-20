@@ -19,6 +19,12 @@
     border: 3px solid #000000; 
 }
 
+button:disabled{
+    background-color: rgba(0, 0, 0, 0.603);
+    
+  }
+ 
+
 
 .div{
     border: 1px solid black;

@@ -22,7 +22,6 @@ import { MatIconModule } from '@angular/material/icon';
     HeaderComponent,
     TabsComponent,
     MatButtonModule,
-    MatDividerModule,
     MatIconModule
   ],
   declarations: [CategoriaPage]

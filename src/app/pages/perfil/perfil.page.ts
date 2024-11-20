@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AlertserviceService } from 'src/app/services/alertservice.service';
 import { BdserviceService } from 'src/app/services/bdservice.service';
 import { Usuario } from 'src/app/services/usuario';
+import { customAlphabet } from 'nanoid';
+import { Clipboard } from '@capacitor/clipboard';
+
 
 @Component({
   selector: 'app-perfil',
@@ -11,6 +14,8 @@ import { Usuario } from 'src/app/services/usuario';
 export class PerfilPage implements OnInit {
   usuario!: Usuario | null;
   juegosCompra: any[] = [];
+  /* clave: string = ''; */
+  /* mostrarClave = false; */
 
 
 
@@ -18,6 +23,7 @@ export class PerfilPage implements OnInit {
 
   ngOnInit(
   ) {
+
 
    /*  this.obtenerUsuario(); */
 
@@ -51,6 +57,31 @@ export class PerfilPage implements OnInit {
 
   }
 
+  mostrarClave(juego: any) {
+    juego.mostrarClave = !juego.mostrarClave;
+  }
+
+  async copiarClave(clave: string) {
+    try {
+      // Copiar la clave al portapapeles
+      await Clipboard.write({
+        string: clave
+      });
+
+      // Mostrar alerta confirmando que se copió la clave
+      this.alerta.presentToast('Clave copiada al portapapeles!');
+    } catch (err) {
+      // Si hay un error, mostrar un mensaje de error
+      this.alerta.presentAlert('Error', 'No se pudo copiar la clave, el error es :'+err);
+    }
+  }
+
+
+ /*  mostrarClave() {
+   
+    juego.mostrarClave = !juego.mostrarClave;
+  }
+ */
  /*  async obtenerUsuario(){
     const idString = localStorage.getItem('usuarioId');
     const id = idString ? parseInt(idString,10) : null;

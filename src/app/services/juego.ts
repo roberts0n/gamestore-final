@@ -11,6 +11,7 @@ export class Juego {
         public id_plataforma? : number,
         public id_categoria? : number,
         public metacritic?: number, // Nuevos campos opcionales
-        public fecha_lanzamiento?: string
+        public fecha_lanzamiento?: string,
+        public esta_desactivado? : boolean
     ){}
 }

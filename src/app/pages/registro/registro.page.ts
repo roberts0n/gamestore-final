@@ -24,7 +24,7 @@ export class RegistroPage implements OnInit {
     this.menuController.enable(false,'menu');
     this.formulario = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      usuario: ['', [Validators.required, Validators.minLength(4)]],
+      usuario: ['', [Validators.required, Validators.minLength(4),Validators.pattern(/\S+/)]],
       password: ['', [Validators.required, Validators.minLength(8),this.passwordValidator()]],
       password2: ['', [Validators.required]]
     }, { validators: this.passwordsMatchValidator() }); 

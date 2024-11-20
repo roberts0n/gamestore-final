@@ -93,7 +93,9 @@ export class CambioClavePage implements OnInit {
     
     if(this.codigo===this.codigoReal){
       this.correo = String(localStorage.getItem('correoRecuperacion'));
-      this.cambioClave(this.correo);
+      /* this.cambioClave(this.correo); */
+      this.router.navigate(['/recuperar-clave-final']);
+      this.alerta.presentToast('Codigo ingresado correctamente!')
     }
     else{
       this.alerta.presentToast('Codigo ingresado no coincide')

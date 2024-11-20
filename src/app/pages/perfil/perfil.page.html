@@ -16,6 +16,8 @@
 <!-- <app-header></app-header> -->
 
 <ion-content [fullscreen]="true">
+
+  
   <div class="">
     <h1 class="ion-text-center sombra">Mi perfil</h1>
     <div class="centrado">
@@ -41,25 +43,58 @@
         </ion-grid>
       </div>
     </div>
-    <ion-list class="lista" *ngIf="juegosCompra.length > 0; else compraVacia">
+    <!-- <ion-list class="lista" *ngIf="juegosCompra.length > 0; else compraVacia">
       <h1 class="ion-text-center sombra">Tus juegos</h1>
       <ion-item class="ion-padding lista-item"  lines="none" *ngFor="let juego of juegosCompra">
         <h1>{{juego.nombre_juego}}</h1>
         <img [src]="juego.imagen" alt="" width="150px" class="">
       </ion-item>
-      <!-- <ion-item class="ion-padding lista-item "  lines="none">
-        <h1>Baldurs Gate 3</h1>
-        <img src="../../../assets/img/bg3.jpg" alt="" width="150px" class="">
+    </ion-list>
+ -->
+
+    <ion-list class="lista" *ngIf="juegosCompra.length > 0; else compraVacia">
+      <h1 class="ion-text-center sombra">Tus juegos</h1>
+      <ion-item class="ion-padding lista-item"  lines="none" *ngFor="let juego of juegosCompra">
+        <div class="compra">
+
+          <div class="fila">
+
+          <h1 class="nombre-juego">{{juego.nombre_juego}} </h1>
+          <img [src]="juego.imagen" alt="" width="150px" class="imagen-juego">
+          </div>
+          <!-- <ion-button  color="tertiary" class="boton-clave"  (click)="mostrarClave(juego)">
+            Ver clave
+          </ion-button>
+          <p *ngIf="juego.mostrarClave">{{ juego.clave }}</p> -->
+          <div class="botonsito">
+            <button mat-fab extended
+            [color]="juego.mostrarClave ? 'accent' : 'primary' " 
+            class="boton-clave" 
+            (click)="mostrarClave(juego)">
+            <mat-icon>vpn_key</mat-icon>
+            {{ juego.mostrarClave ? 'Ocultar clave' : 'Ver clave' }}
+            </button>
+
+          </div>
+
+      <!-- <p *ngIf="juego.mostrarClave">{{ juego.clave }}</p> -->
+      <p *ngIf="juego.mostrarClave">
+        {{ juego.clave }}
+        <ion-icon 
+          name="copy-outline" 
+          slot="end" 
+          (click)="copiarClave(juego.clave)"
+          style="cursor: pointer; margin-left: 10px;">
+        </ion-icon>
+      </p>
+        </div>
       </ion-item>
-      <ion-item class="ion-padding lista-item" lines="none">
-        <h1>Diablo 4</h1>
-        <img src="../../../assets/img/d4.png" alt="" width="150px" class="">
-      </ion-item> -->
     </ion-list>
 
 
+
     <ng-template #compraVacia>
-      <div text-center>
+      <div class="ion-text-center mensaje">
         <h2>No has comprado nada todavia.</h2>
         <p>Compra algunos juegos de nuestra tienda!</p>
       </div>

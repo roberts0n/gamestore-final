@@ -26,17 +26,17 @@ export class EditarPage implements OnInit {
 
   
 
-  constructor(private alerta : AlertserviceService,private formBuilder: FormBuilder,private toastController : ToastController,private router:Router,private bd : BdserviceService ) {
+  constructor(private alerta : AlertserviceService,private formBuilder: FormBuilder,private router:Router,private bd : BdserviceService ) {
     if(this.router.getCurrentNavigation()?.extras.state){
 
       this.id = this.router.getCurrentNavigation()?.extras?.state?.['id'];
     }
 
      this.formulario = this.formBuilder.group({
-      nombre: ['', Validators.minLength(3)],
+      nombre: ['', [Validators.minLength(3), Validators.pattern(/\S+/)]],
       plataforma: [null, ],
       categoria: [null, ],
-      descripcion: ['', [ Validators.minLength(10)]],
+      descripcion: ['', [Validators.minLength(10), Validators.pattern(/\S+/)]],
       precio: [null, [ Validators.min(1000)]],
       imagen: ['']
     },{ validators: this.alMenosUnCampoCambiado() }); 
@@ -101,7 +101,7 @@ export class EditarPage implements OnInit {
     };
   }
 
-  async alertaBoton(mensaje:string){
+  /* async alertaBoton(mensaje:string){
     const toast = await this.toastController.create({
       message: mensaje,
       duration: 2500,
@@ -109,7 +109,7 @@ export class EditarPage implements OnInit {
     });
 
     await toast.present();
-  }
+  } */
 
 
   

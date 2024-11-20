@@ -27,6 +27,14 @@ ion-item::part(native) {
     color: #000000;
 } 
 
+button:disabled{
+    background-color: rgba(0, 0, 0, 0.603);
+    
+  }
+ 
+
+
+
 
 
 .boton-login{

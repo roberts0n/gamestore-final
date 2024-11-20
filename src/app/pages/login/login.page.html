@@ -51,7 +51,7 @@
             <a [routerLink]="['/recuperar-clave']" routerLinkActive="router-link-active" class="olvidar">Olvidaste tu contraseña? Presiona aqui</a>
             <br>
             <div class="botones-login">
-              <button  type="submit" (click)="verificarLogin()" mat-fab extended class="boton-login ion-padding" [disabled]="formulario.invalid" color="primary">
+              <button  type="submit" (click)="verificarLogin()" mat-fab extended class="boton-login ion-padding"   [class.disabled]="formulario.invalid"  [disabled]="formulario.invalid" color="primary">
                 <mat-icon >login</mat-icon>
                 Iniciar sesion
               </button>

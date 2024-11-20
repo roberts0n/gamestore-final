@@ -26,7 +26,7 @@ export class EditarPerfilPage implements OnInit {
   constructor(private formBuilder: FormBuilder,private alerta : AlertserviceService,private router:Router,private alertcontroller: AlertController,private toastController: ToastController,private menuController: MenuController,private bd :BdserviceService) {
 
     this.formulario = this.formBuilder.group({
-      usuario: ['', [Validators.minLength(3)]], // Al menos 3 letras si se cambia
+      usuario: ['', [Validators.minLength(3),Validators.pattern(/\S+/)]], // Al menos 3 letras si se cambia
       edad: ['', [Validators.min(13), Validators.max(120)]], // Edad entre 13 y 120
       imagen: [''] // Sin restricciones aquí
     }, { validators: this.validarCamposVacios() });

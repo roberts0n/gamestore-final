@@ -67,7 +67,6 @@ export class LoginPage implements OnInit {
       this.alerta.presentToast('No puedes dejar campos vacios')
       return;
     } */
-
     
     const usuario = this.formulario.get('usuario')?.value;
     const password = this.formulario.get('password')?.value; 

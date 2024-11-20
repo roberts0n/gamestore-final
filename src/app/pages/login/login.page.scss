@@ -31,6 +31,12 @@
     background: rgba(138, 235, 218, 0.6);
 }
 
+button:disabled{
+   background-color: rgba(0, 0, 0, 0.603);
+   
+ }
+
+
 ion-item::part(native) {
     background-color: rgba(138, 235, 218, 0.4);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
@@ -38,6 +44,7 @@ ion-item::part(native) {
  }
 
  .olvidar{
+   color: #000000;
     display: flex;
     justify-content: baseline;
  }

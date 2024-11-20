@@ -22,7 +22,6 @@ import { TabsComponent } from 'src/app/components/tabs/tabs.component';
     HeaderComponent,
     TabsComponent,
     MatButtonModule,
-    MatDividerModule,
     MatIconModule
   ],
   declarations: [PlataformaPage]

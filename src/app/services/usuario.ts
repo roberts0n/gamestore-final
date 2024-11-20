@@ -12,6 +12,7 @@ export class Usuario {
         public id_rol : number,
         public edad? : number,
         public imagen? : any,
+        public esta_bloqueado? : boolean
     ){}
      
 }

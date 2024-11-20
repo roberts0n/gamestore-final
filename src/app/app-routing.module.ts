@@ -112,6 +112,22 @@ const routes: Routes = [
     loadChildren: () => import('./pages/plataforma/plataforma.module').then( m => m.PlataformaPageModule)
   },
   {
+    path: 'recuperar-clave-final',
+    loadChildren: () => import('./pages/recuperar-clave-final/recuperar-clave-final.module').then( m => m.RecuperarClaveFinalPageModule)
+  },
+  {
+    path: 'historial',
+    loadChildren: () => import('./pages/crud/historial/historial.module').then( m => m.HistorialPageModule)
+  },
+  {
+    path: 'historial-detalle',
+    loadChildren: () => import('./pages/crud/historial-detalle/historial-detalle.module').then( m => m.HistorialDetallePageModule)
+  },
+  {
+    path: 'resenas',
+    loadChildren: () => import('./pages/crud/resenas/resenas.module').then( m => m.ResenasPageModule)
+  },
+  {
     path: '**',
     loadChildren: () => import('./pages/notfound/notfound.module').then( m => m.NotfoundPageModule)
   },

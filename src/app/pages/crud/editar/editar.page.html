@@ -66,7 +66,7 @@
             <h2 class="subtitulos">Ingrese la descripción: </h2>
             <ion-item>
               <ion-icon name="document-text-outline"  slot="start"></ion-icon>
-              <ion-input placeholder="Descripcion:" formControlName="descripcion" type="text" ></ion-input>
+              <ion-textarea placeholder="Descripcion:" formControlName="descripcion" type="text"  autoGrow="true" ></ion-textarea>
             </ion-item>
             <div *ngIf="formulario.get('descripcion')?.invalid && formulario.get('descripcion')?.touched">
               <ion-text color="danger" *ngIf="formulario.get('descripcion')?.errors?.['minlength']">Debe tener al menos 10 caracteres</ion-text>

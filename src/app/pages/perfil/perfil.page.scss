@@ -28,24 +28,24 @@ ion-item::part(native) {
     --border-color: rgba(138, 235, 218, 0.1);
  }
 
-ion-item.lista-item{
+/* ion-item.lista-item{
     display: flex;
     align-items: center; 
    
-}
-ion-item.lista-item h1 {
+} */
+/* ion-item.lista-item h1 {
     flex: 1; 
     margin-right: 10px; 
     text-align: left; 
-}
+} */
 
- ion-item.lista-item img {
+/*  ion-item.lista-item img {
     border: 2px solid #000000; 
     border-radius: 10px;
     margin-left: 10px;
     height: auto;
     max-width: 150px;
-}
+} */
 
 .editar{
     display: flex;
@@ -89,6 +89,64 @@ ion-item.lista-item h1 {
     border-radius: 15px; 
     
 }
+
+
+/* ion-item.lista-item h1 {
+    text-align: left;
+    margin-bottom: 10px;
+    width: 100%;
+  } */
+
+ion-item.lista-item {
+    display: flex;
+  flex-direction: column; 
+  }
+  
+.nombre-juego {
+    flex: 1;
+    text-align: left;
+    margin-right: 10px;
+}
+
+
+.mensaje{
+    padding: 5px;
+      border-radius: 15px;
+      border: 1px solid #000000; 
+      margin-top: 50px;
+      background: rgba(138, 235, 218, 0.6) ;
+  }
+  
+
+.imagen-juego{
+    border: 2px solid #000000;
+    border-radius: 10px;
+    max-width: 150px;
+    height: auto;
+}
+
+.compra{
+    width: 100%;
+}
+
+.boton-clave {
+  margin-top: 10px;
+  border-radius: 5px;
+  color: white;
+  }
+
+.botonsito{
+    display: flex;
+    justify-content: center;
+}
+
+.fila {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
 
 .foto-perfil{
     width: 200px;

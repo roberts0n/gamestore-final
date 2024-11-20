@@ -1,0 +1,185 @@
+/* 
+.lista-deseos{
+    margin: 5px;
+    margin-top: 50px;
+    background-color: rgba(138, 235, 218, 0.5);
+    box-shadow: 0 4px 8px rgba($color: #000000, $alpha: 1.0);
+    color: #000000;
+    border-radius: 15px;
+    border: 1px solid  #000000;
+}
+
+
+
+.lista{
+    margin: 5px;
+    margin-top: 50px;
+    color: #000000;
+    box-shadow: 0 4px 8px rgba($color: #000000, $alpha: 1.0);
+    background-color: rgba(138, 235, 218, 0.4);
+    border-radius: 10px;
+    border: 1px groove  #000000; 
+}
+
+.negro{
+    color: #000000;
+    
+}
+
+.orden{
+    display: flex;
+    flex-direction: column;
+    margin-top: -15px;
+}
+.subtitulos{
+    color: #000000;
+}
+.avatar{
+    transform: scale(1);
+    object-fit: cover;
+}
+.distancia{
+    border: 1px groove  #000000;
+    padding: 5px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba($color: #000000, $alpha: 1.0);
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.boton-eliminar{
+    margin-top: 5px;
+    margin-left: 20px;
+    box-shadow: none !important;
+    color: white;
+    background-color: rgba(219, 81, 1, 0.753)
+}
+
+.boton-compra{
+    margin-top: 5px;
+    margin-left: 20px;
+    box-shadow: none !important;
+    background-color: rgba(18, 141, 79, 0.705);
+    color: white;
+    
+}
+
+
+@media (max-width:424px)  {
+    .boton-eliminar{
+        margin-top: 5px;
+        margin-left: 5px;
+        box-shadow: none !important;
+    }
+    
+    .boton-compra{
+        margin-top: 5px;
+        margin-left: 5px;
+        box-shadow: none !important;
+    }
+    
+    
+    
+} */
+
+.detalles{
+    text-align: center ;
+}
+
+.titulo{
+    text-align: center;
+    color: #000000;
+
+}
+
+.lista-deseos {
+    margin: 5px;
+    margin-top: 50px;
+    background-color: rgba(138, 235, 218, 0.5);
+    box-shadow: 0 4px 8px rgba($color: #000000, $alpha: 1.0);
+    color: #000000;
+    border-radius: 15px;
+    border: 1px solid  #000000;
+}
+
+.distancia {
+    padding: 5px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    display: flex; /* Cambia a flex para manejar mejor el espacio */
+    justify-content: space-between; /* Alinea los elementos con espacio entre ellos */
+    align-items: flex-start; /* Alinea los elementos en la parte superior */
+}
+
+.negro {
+    color: #000000;
+}
+
+.orden {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centra los botones verticalmente */
+    margin-left: 10px; /* Espaciado para separar botones del texto */
+}
+
+.boton-eliminar, .boton-compra {
+    margin-top: 5px;
+    box-shadow: none !important;
+    color: white;
+}
+
+.boton-eliminar {
+    background-color: rgba(219, 81, 1, 0.753);
+}
+
+.boton-compra {
+    background-color: rgba(18, 141, 79, 0.705);
+}
+
+.info{
+    display: flex;
+    text-align: center;
+}
+
+ion-thumbnail {
+    --size: 100px;
+    --border-radius: 14px;
+    border-radius: 20px;
+    border: 2px solid #000000; 
+    box-shadow: 0 4px 8px rgba($color: #000000, $alpha: 0.5);
+  }
+
+  .lista{
+    margin: 5px;
+    margin-top: 50px;
+    color: #000000;
+    box-shadow: 0 4px 8px rgba($color: #000000, $alpha: 1.0);
+    background-color: rgba(138, 235, 218, 0.4);
+    border-radius: 10px;
+    border: 1px groove  #000000;
+}
+
+.lista2{
+    margin-top: 30px;
+    color: #000000;
+    box-shadow: 0 4px 8px rgba($color: #000000, $alpha: 1.0);
+    background-color: rgba(138, 235, 218, 0.4);
+    border-radius: 10px;
+    border: 1px groove  #000000; 
+}
+
+
+ion-item::part(native) {
+    border-radius: 20px;
+    background-color: rgba(138, 235, 218, 0.4);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    border: 1px groove  #000000; 
+ }
+
+
+
+@media (max-width: 424px) {
+    .boton-eliminar, .boton-compra {
+        margin-left: 5px;
+    }
+}

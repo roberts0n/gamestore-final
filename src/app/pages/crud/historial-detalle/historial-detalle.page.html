@@ -1,0 +1,107 @@
+<ion-header>
+  <ion-toolbar color="barras">
+    <div class="titulo">
+      <ion-img src="../../../assets/img/logo.png" alt="" style="width: 30px;" class="logo"></ion-img>
+      <ion-title>Lista de deseos</ion-title>
+    </div>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true">
+    <!--  <ion-list class="lista-deseos" *ngFor="let x of arregloDetalles">
+      <h1 class="titulo">Detalle de la compra de {{x.nombre_usuario}} con id : {{x.id_compra}}</h1>
+    <ion-item class="distancia" >
+      <ion-thumbnail slot="start">
+        <img alt="Silhouette of mountains" src="{{x.imagen}}" />
+      </ion-thumbnail>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" class="info">
+            <span  class="negro sombra">{{x.nombre_juego}}</span>
+           </ion-col>
+           <ion-col size="12" class="info">
+            <span  class="negro sombra">Plataforma : {{x.nombre_plataforma}}</span>
+           </ion-col>
+           <ion-col size="12" class="info">
+            <span  class="negro sombra">Precio $:{{x.precio}}</span>
+           </ion-col>
+          <ion-col size="12" class="orden">
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+    <div>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" class="detalles">
+            <h3>Total de la compra : ${{x.total}}</h3>
+            <h3>Fecha de la compra : {{x.fecha}}</h3>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </ion-list> -->
+
+  <ion-list class="lista-deseos">
+    <!-- Encabezado de la compra -->
+    <h1 class="titulo">Detalle de la compra de {{arregloDetalles[0]?.nombre_usuario}} con id : {{arregloDetalles[0]?.id_compra}}</h1>
+    
+    <!-- Recorrer los juegos de la compra -->
+    <ion-item class="distancia" *ngFor="let x of arregloDetalles">
+      <ion-thumbnail slot="start">
+        <img alt="Silhouette of mountains" src="{{x.imagen}}" />
+      </ion-thumbnail>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" class="info">
+            <span class="negro sombra">{{x.nombre_juego}}</span>
+          </ion-col>
+          <ion-col size="12" class="info">
+            <span class="negro sombra">Plataforma: {{x.nombre_plataforma}}</span>
+          </ion-col>
+          <ion-col size="12" class="info">
+            <span class="negro sombra">Precio $:{{x.precio}}</span>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+    <!-- Información total de la compra -->
+    <div>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" class="detalles">
+            <h3>Total de la compra: ${{arregloDetalles[0]?.total}}</h3>
+            <h3>Fecha de la compra: {{arregloDetalles[0]?.fecha}}</h3>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </ion-list>
+
+
+  <ng-template #deseosVacio>
+    <ion-card text-center class="lista-deseos">
+      <ion-card-header>
+        <h1 class="ion-text-center sombra subtitulos">Lista de deseos vacia</h1>
+      </ion-card-header>
+    
+      <ion-card-content>
+       <p>Tu lista de deseos esta vacia! Añade algunos juegos!</p>
+      </ion-card-content>
+    </ion-card>
+    
+  </ng-template>
+ 
+  
+
+</ion-content>
+
+
+<app-tabs></app-tabs>

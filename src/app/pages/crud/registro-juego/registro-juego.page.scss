@@ -21,6 +21,13 @@ ion-item::part(native) {
     border: 1px groove  #000000; 
  }
 
+
+ button:disabled{
+    background-color: rgba(0, 0, 0, 0.603);
+    
+  }
+ 
+
 /*  .opciones{
         --background: #4CAF50;
         --color: #ffffff; 

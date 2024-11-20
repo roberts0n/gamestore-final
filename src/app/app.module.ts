@@ -14,6 +14,7 @@ import { TabsComponent } from './components/tabs/tabs.component';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Clipboard } from '@capacitor/clipboard';
 
 
 @NgModule({

@@ -20,6 +20,12 @@
     background: rgba(138, 235, 218, 0.6);
 }
 
+button:disabled{
+    background-color: rgba(0, 0, 0, 0.603);
+    
+  }
+ 
+
 .subtitulos{
     color: #000000;
 }

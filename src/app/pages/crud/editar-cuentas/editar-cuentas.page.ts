@@ -10,12 +10,14 @@ import { BdserviceService } from 'src/app/services/bdservice.service';
 })
 export class EditarCuentasPage implements OnInit {
 
-  arregloUsuarios: any = [{
+  /* arregloUsuarios: any = [{
     idUsuario: '',
     nombre: '',
     idRol : ''
 
-  }]
+  }] */
+
+  arregloUsuarios: any[] = [];
 
   constructor(private toastController : ToastController,private router:Router,private bd: BdserviceService) { }
 

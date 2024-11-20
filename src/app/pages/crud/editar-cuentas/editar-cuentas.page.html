@@ -25,33 +25,41 @@
         <ion-card class="carta" *ngFor="let x of arregloUsuarios">
           <ion-card-header>
             <ion-card-title class="ion-text-center">Usuario: {{x.nombre}}</ion-card-title>
+            <ion-card-title class="ion-text-center">Correo: {{x.email}}</ion-card-title>
             <h5 *ngIf="x.id_rol === 2" class="ion-text-center" style="color: black;">Cuenta de Administrador</h5>
             <h5 *ngIf="x.id_rol === 1" class="ion-text-center" style="color: black;">Cuenta de Cliente</h5>
+            <h4 *ngIf="x.esta_bloqueado === 0 " class="ion-text-center" style="color: black;">Cuenta desbloqueada</h4>
+            <h4 *ngIf="x.esta_bloqueado === 1 " class="ion-text-center" style="color: black;">Cuenta bloqueada</h4>
+
           </ion-card-header>
           <div class="botones ion-margin">
-            <button mat-fab extended class="boton"  (click)="desbloquear(x.idUsuario)">
+
+
+            <button *ngIf="x.esta_bloqueado === 1 " mat-fab extended class="boton"  (click)="desbloquear(x.idUsuario)">
               <mat-icon>lock_open</mat-icon>
               Desbloquear
             </button>
             
-            <button  style="margin-left: 10px;" mat-fab extended class="boton2" color="primary" (click)="bloquear(x.idUsuario)">
+            <button *ngIf="x.esta_bloqueado === 0 " style="margin-left: 10px;" mat-fab extended class="boton2" color="primary" (click)="bloquear(x.idUsuario)">
               <mat-icon >lock</mat-icon>
               Bloquear
             </button>
-          </div>
 
-          <div class="botones ion-margin">
+          <button *ngIf="x.id_rol === 1" style="margin-left: 10px;" mat-fab extended class="boton"  (click)="darAdmin(x.idUsuario)">
+            <mat-icon>verified_user</mat-icon>
+            Dar admin
+          </button>
 
-            <button mat-fab extended class="boton"  (click)="darAdmin(x.idUsuario)">
-              <mat-icon>verified_user</mat-icon>
-              Dar admin
-            </button>
+          <button *ngIf="x.id_rol === 2" style="margin-left: 10px;" mat-fab extended class="boton2" color="primary" (click)="quitarAdmin(x.idUsuario)">
+            <mat-icon >clear</mat-icon>
+            Quitar admin
+          </button>
 
-            <button  style="margin-left: 10px;" mat-fab extended class="boton2" color="primary" (click)="quitarAdmin(x.idUsuario)">
-              <mat-icon >clear</mat-icon>
-              Quitar admin
-            </button>
-          </div>
+        </div>
+
+          <!-- <div class="botones ion-margin">
+
+          </div> -->
         </ion-card>
       </ion-col>
     </ion-row>

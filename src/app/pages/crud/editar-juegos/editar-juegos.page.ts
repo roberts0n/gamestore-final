@@ -10,7 +10,7 @@ import { BdserviceService } from 'src/app/services/bdservice.service';
 })
 export class EditarJuegosPage implements OnInit {
 
-  arregloJuegos : any = [{
+ /*  arregloJuegos : any = [{
     idJuego : '',
     nombre_juego : '',
     precio : '',
@@ -20,15 +20,17 @@ export class EditarJuegosPage implements OnInit {
     imagen : ''
 
   }]
+ */
+  arregloJuegos: any[] = [];
 
   constructor(private toastController : ToastController,private router:Router,private bd : BdserviceService) { }
 
   
   ngOnInit() {
 
-    this.bd.getJuegos();
+    this.bd.getJuegosAdmin();
 
-    this.bd.fetchJuegos().subscribe(data=>{
+    this.bd.fetchJuegosAdmin().subscribe(data=>{
       this.arregloJuegos = data;
     })
   }
@@ -48,6 +50,16 @@ export class EditarJuegosPage implements OnInit {
 
     this.bd.deleteJuego(id)
   }
+
+  botonDesactivar(id : number){
+
+    this.bd.desactivarJuego(id);
+  }
+  botonActivar(id : number){
+
+    this.bd.activarJuego(id);
+  }
+
 
 
   irEditar(id : number){

@@ -17,7 +17,7 @@ export class TabsComponent  implements OnInit/* , OnDestroy */ {
 
   constructor(private platform: Platform) { }
 
-  ngOnInit() {
+ /*  ngOnInit() {
     this.platform.ready().then(()=>{
       Keyboard.addListener('keyboardWillShow',()=>{
         this.keyboardOpen = true;
@@ -27,7 +27,24 @@ export class TabsComponent  implements OnInit/* , OnDestroy */ {
         this.keyboardOpen = false;
       })
     })
-  }
+  } */
+
+    ngOnInit() {
+      this.platform.ready().then(() => {
+        if (this.platform.is('cordova')) {
+          // Solo agrega el listener si está en un dispositivo móvil (cordova)
+          Keyboard.addListener('keyboardWillShow', () => {
+            this.keyboardOpen = true;
+          });
+          Keyboard.addListener('keyboardWillHide', () => {
+            this.keyboardOpen = false;
+          });
+        }
+      });
+    }
+  
+
+    
 
  /*  ngOnDestroy() {
     Keyboard.removeAllListeners();
